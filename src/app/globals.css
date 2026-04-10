@@ -1,44 +1,69 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @theme {
-  --color-on-secondary: #005d2c;
-  --color-on-primary: #002971;
-  --color-on-surface-variant: #aaabb0;
-  --color-surface-container-low: #111318;
-  --color-primary-container: #799dff;
-  --color-surface-variant: #23262c;
-  --color-tertiary: #ff7076;
-  --color-surface-container: #171a1f;
-  --color-surface-tint: #8eabff;
-  --color-tertiary-container: #fe1543;
-  --color-background: #0c0e12;
-  --color-surface-container-highest: #23262c;
-  --color-outline: #74757a;
-  --color-outline-variant: #46484d;
-  --color-surface-dim: #0c0e12;
-  --color-surface-bright: #292c32;
-  --color-primary: #8eabff;
-  --color-primary-dim: #156aff;
-  --color-on-surface: #f6f6fc;
-  --color-surface-container-high: #1d2025;
-  --color-error: #ff6e84;
-  --color-primary-fixed: #799dff;
-  --color-surface: #0c0e12;
-  --color-secondary: #3fff8b;
-  --color-on-background: #f6f6fc;
-  --color-accent-success: #3fff8b;
+  /* ═══════════════════════════════════════════
+     BOSTON ASSET MANAGER — Official Palette
+     ═══════════════════════════════════════════ */
 
-  --font-headline: var(--font-lexend), sans-serif;
-  --font-body: var(--font-manrope), sans-serif;
-  --font-lexend: var(--font-lexend), sans-serif;
-  --font-manrope: var(--font-manrope), sans-serif;
+  /* Surfaces — light cool gray background system */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-dim: #e2e8f0;
+  --color-surface-bright: #ffffff;
+  --color-surface-container-low: #f8fafc;
+  --color-surface-container: #f1f5f9;
+  --color-surface-container-high: #e2e8f0;
+  --color-surface-container-highest: #cbd5e1;
+  --color-surface-variant: #64748b;
+  --color-surface-tint: #2563eb;
+
+  /* Text — Boston slate */
+  --color-on-surface: #374151;
+  --color-on-surface-variant: #64748b;
+  --color-on-background: #374151;
+
+  /* Primary — Boston accent blue */
+  --color-primary: #2563eb;
+  --color-primary-dim: #1d3969;
+  --color-primary-container: #dbeafe;
+  --color-primary-fixed: #1d3969;
+  --color-on-primary: #ffffff;
+
+  /* Secondary — Boston success green */
+  --color-secondary: #059669;
+  --color-on-secondary: #ffffff;
+
+  /* Tertiary — error rose */
+  --color-tertiary: #dc2626;
+  --color-tertiary-container: #fecaca;
+
+  /* Outlines — Boston border grays */
+  --color-outline: #64748b;
+  --color-outline-variant: #e2e8f0;
+
+  /* Error + success */
+  --color-error: #dc2626;
+  --color-accent-success: #059669;
+
+  /* Fonts — Boston system stack */
+  --font-headline: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-lexend: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-manrope: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 @layer base {
   body {
-    @apply bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary;
+    @apply text-on-surface font-body selection:bg-primary selection:text-on-primary;
+    background: transparent;
     overflow-x: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.02em;
   }
 }
 
@@ -51,163 +76,181 @@
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  background: #060810;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
-/* Gradient mesh aurora */
-.stadium-noir::before {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(21, 106, 255, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(63, 255, 139, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 60% 10%, rgba(142, 171, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 70% at 10% 90%, rgba(255, 112, 118, 0.04) 0%, transparent 40%);
-  animation: aurora-drift 20s ease-in-out infinite alternate;
-}
-
-/* Film grain overlay */
-.stadium-noir::after {
-  content: '';
+/* Background video/image — fills viewport, no overlays */
+.stadium-video {
   position: absolute;
   inset: 0;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px 256px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-@keyframes aurora-drift {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(2%, -1%) rotate(0.5deg); }
-  66% { transform: translate(-1%, 2%) rotate(-0.3deg); }
-  100% { transform: translate(1%, -2%) rotate(0.2deg); }
-}
-
-/* Spotlight cone from top */
-.spotlight {
-  position: absolute;
-  top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120%;
-  height: 70%;
-  background: radial-gradient(ellipse at center top, rgba(142, 171, 255, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-/* Floating particles */
-.particles {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.particle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: rgba(142, 171, 255, 0.4);
-  animation: particle-float linear infinite;
-}
-
-.particle:nth-child(1) { left: 15%; animation-duration: 12s; animation-delay: 0s; }
-.particle:nth-child(2) { left: 35%; animation-duration: 16s; animation-delay: -3s; width: 3px; height: 3px; background: rgba(63, 255, 139, 0.3); }
-.particle:nth-child(3) { left: 55%; animation-duration: 14s; animation-delay: -6s; }
-.particle:nth-child(4) { left: 75%; animation-duration: 18s; animation-delay: -9s; width: 1px; height: 1px; background: rgba(255, 112, 118, 0.3); }
-.particle:nth-child(5) { left: 90%; animation-duration: 13s; animation-delay: -4s; }
-.particle:nth-child(6) { left: 8%; animation-duration: 15s; animation-delay: -7s; width: 3px; height: 3px; }
-.particle:nth-child(7) { left: 45%; animation-duration: 20s; animation-delay: -2s; background: rgba(63, 255, 139, 0.25); }
-.particle:nth-child(8) { left: 65%; animation-duration: 11s; animation-delay: -5s; }
-
-@keyframes particle-float {
-  0% { transform: translateY(100vh) scale(0); opacity: 0; }
-  10% { opacity: 1; transform: translateY(90vh) scale(1); }
-  90% { opacity: 1; }
-  100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
 }
 
 /* ═══════════════════════════════════════════
-   Glass Morphism System
+   Boston Glass Card System
+   (white, subtle navy shadow, thin border)
    ═══════════════════════════════════════════ */
 
 .glass-panel {
-  background: rgba(35, 38, 44, 0.5);
-  backdrop-filter: blur(24px) saturate(1.2);
-  border: 1px solid rgba(142, 171, 255, 0.08);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 15px rgba(29, 57, 105, 0.08);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(30, 34, 45, 0.55) 0%, rgba(20, 22, 30, 0.65) 100%);
-  backdrop-filter: blur(16px) saturate(1.3);
-  border: 1px solid rgba(142, 171, 255, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.82) 100%);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  border: 1px solid rgba(226, 232, 240, 0.95);
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.3),
-    0 1px 0 rgba(142, 171, 255, 0.06) inset;
+    0 4px 15px rgba(29, 57, 105, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.95) inset;
 }
 
 .glass-card-elevated {
-  background: linear-gradient(145deg, rgba(35, 40, 55, 0.6) 0%, rgba(18, 20, 28, 0.7) 100%);
-  backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(142, 171, 255, 0.12);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.97) 0%, rgba(241, 245, 249, 0.88) 100%);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  border: 1px solid rgba(226, 232, 240, 1);
   box-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.4),
-    0 1px 0 rgba(142, 171, 255, 0.08) inset,
-    0 0 80px rgba(142, 171, 255, 0.03);
+    0 8px 25px rgba(29, 57, 105, 0.12),
+    0 1px 0 rgba(255, 255, 255, 1) inset;
 }
 
 /* ═══════════════════════════════════════════
-   Glow System
+   Boston CTA Buttons (gradient navy → accent)
+   ═══════════════════════════════════════════ */
+
+.boston-cta {
+  background: linear-gradient(135deg, #1d3969, #2563eb);
+  color: #ffffff;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(29, 57, 105, 0.3);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.boston-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35);
+}
+
+.boston-cta:active {
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════
+   Boston Icon Container (60x60 with subtle gradient)
+   ═══════════════════════════════════════════ */
+
+.boston-icon-box {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(29, 57, 105, 0.08), rgba(37, 99, 235, 0.08));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1d3969;
+}
+
+.boston-icon-box-sm {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, rgba(29, 57, 105, 0.08), rgba(37, 99, 235, 0.08));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1d3969;
+}
+
+.boston-icon-box-lg {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(29, 57, 105, 0.08), rgba(37, 99, 235, 0.08));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1d3969;
+}
+
+/* ═══════════════════════════════════════════
+   Boston Typography helpers
+   ═══════════════════════════════════════════ */
+
+.boston-title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1d3969;
+}
+
+.boston-overline {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #2563eb;
+}
+
+/* ═══════════════════════════════════════════
+   Glow System — Boston navy tones
    ═══════════════════════════════════════════ */
 
 .glow-success {
   box-shadow:
-    0 0 20px rgba(63, 255, 139, 0.25),
-    0 0 60px rgba(63, 255, 139, 0.1),
-    0 1px 0 rgba(63, 255, 139, 0.3) inset;
-  border-color: #3fff8b !important;
+    0 0 20px rgba(5, 150, 105, 0.35),
+    0 0 60px rgba(5, 150, 105, 0.15),
+    0 1px 0 rgba(5, 150, 105, 0.4) inset;
+  border-color: #059669 !important;
 }
 
 .glow-error {
   box-shadow:
-    0 0 20px rgba(255, 112, 118, 0.25),
-    0 0 60px rgba(255, 112, 118, 0.1),
-    0 1px 0 rgba(255, 112, 118, 0.3) inset;
-  border-color: #ff7076 !important;
+    0 0 20px rgba(220, 38, 38, 0.35),
+    0 0 60px rgba(220, 38, 38, 0.15),
+    0 1px 0 rgba(220, 38, 38, 0.4) inset;
+  border-color: #dc2626 !important;
 }
 
 .glow-primary {
   box-shadow:
-    0 0 20px rgba(142, 171, 255, 0.3),
-    0 0 60px rgba(142, 171, 255, 0.1),
-    0 1px 0 rgba(142, 171, 255, 0.2) inset;
+    0 0 20px rgba(37, 99, 235, 0.35),
+    0 0 60px rgba(29, 57, 105, 0.2),
+    0 1px 0 rgba(37, 99, 235, 0.3) inset;
 }
 
 /* ═══════════════════════════════════════════
-   Timer Glow Ring (dynamic via CSS custom props)
+   Timer Glow Ring
    ═══════════════════════════════════════════ */
 
 .timer-ring {
-  filter: drop-shadow(0 0 8px rgba(142, 171, 255, 0.4));
+  filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.5));
   transition: filter 0.3s ease;
 }
 
 .timer-ring.urgent {
-  filter: drop-shadow(0 0 12px rgba(255, 112, 118, 0.5));
+  filter: drop-shadow(0 0 12px rgba(220, 38, 38, 0.6));
   animation: timer-pulse 0.6s ease-in-out infinite;
 }
 
 @keyframes timer-pulse {
-  0%, 100% { filter: drop-shadow(0 0 12px rgba(255, 112, 118, 0.5)); transform: scale(1); }
-  50% { filter: drop-shadow(0 0 20px rgba(255, 112, 118, 0.7)); transform: scale(1.05); }
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(220, 38, 38, 0.6)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.8)); transform: scale(1.05); }
 }
 
 /* ═══════════════════════════════════════════
-   Answer Option Accents
+   Answer Option Accents — preserved side-bar animation
    ═══════════════════════════════════════════ */
 
 .answer-accent {
@@ -222,7 +265,7 @@
   left: 0;
   width: 3px;
   height: 100%;
-  background: linear-gradient(180deg, rgba(142, 171, 255, 0.4) 0%, rgba(142, 171, 255, 0) 100%);
+  background: linear-gradient(180deg, rgba(29, 57, 105, 0.7) 0%, rgba(37, 99, 235, 0) 100%);
   border-radius: 3px 0 0 3px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -234,12 +277,12 @@
 }
 
 .answer-correct::before {
-  background: linear-gradient(180deg, rgba(63, 255, 139, 0.6) 0%, rgba(63, 255, 139, 0) 100%) !important;
+  background: linear-gradient(180deg, rgba(5, 150, 105, 0.85) 0%, rgba(5, 150, 105, 0) 100%) !important;
   opacity: 1 !important;
 }
 
 .answer-incorrect::before {
-  background: linear-gradient(180deg, rgba(255, 112, 118, 0.6) 0%, rgba(255, 112, 118, 0) 100%) !important;
+  background: linear-gradient(180deg, rgba(220, 38, 38, 0.85) 0%, rgba(220, 38, 38, 0) 100%) !important;
   opacity: 1 !important;
 }
 
@@ -256,9 +299,9 @@
   position: absolute;
   inset: -40px;
   background:
-    radial-gradient(circle at 30% 40%, rgba(63, 255, 139, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 70% 60%, rgba(142, 171, 255, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 50% 20%, rgba(255, 112, 118, 0.08) 0%, transparent 30%);
+    radial-gradient(circle at 30% 40%, rgba(5, 150, 105, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(37, 99, 235, 0.18) 0%, transparent 40%),
+    radial-gradient(circle at 50% 20%, rgba(29, 57, 105, 0.14) 0%, transparent 30%);
   border-radius: 50%;
   animation: confetti-expand 1s ease-out forwards;
   pointer-events: none;
@@ -275,9 +318,10 @@
 
 .category-badge {
   position: relative;
-  background: rgba(142, 171, 255, 0.08);
-  border: 1px solid rgba(142, 171, 255, 0.15);
+  background: linear-gradient(135deg, rgba(29, 57, 105, 0.08), rgba(37, 99, 235, 0.08));
+  border: 1px solid rgba(37, 99, 235, 0.2);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .category-badge::after {
@@ -287,7 +331,7 @@
   left: 20%;
   right: 20%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(142, 171, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.5), transparent);
 }
 
 /* ═══════════════════════════════════════════
@@ -306,7 +350,7 @@
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: btn-shine-sweep 3s ease-in-out infinite;
 }
 
@@ -321,7 +365,7 @@
 
 .divider-glow {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(142, 171, 255, 0.2) 30%, rgba(142, 171, 255, 0.4) 50%, rgba(142, 171, 255, 0.2) 70%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(29, 57, 105, 0.25) 30%, rgba(37, 99, 235, 0.5) 50%, rgba(29, 57, 105, 0.25) 70%, transparent 100%);
 }
 
 /* ═══════════════════════════════════════════
@@ -335,6 +379,25 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(142, 171, 255, 0.15);
+  background: rgba(29, 57, 105, 0.25);
   border-radius: 10px;
+}
+
+/* ═══════════════════════════════════════════
+   Entry animations (Boston fadeInUp)
+   ═══════════════════════════════════════════ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated-element {
+  animation: fadeInUp 0.6s ease-out forwards;
 }

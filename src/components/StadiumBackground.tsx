@@ -1,19 +1,16 @@
 'use client';
 
+const IMAGE_SRC =
+  'https://ss4cnmwrqckodj1i.public.blob.vercel-storage.com/background.jpg';
+
 export default function StadiumBackground() {
   return (
     <div className="stadium-noir" aria-hidden="true">
-      <div className="spotlight" />
-      <div className="particles">
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-      </div>
+      <img
+        className="stadium-video"
+        src={IMAGE_SRC}
+        alt=""
+      />
     </div>
   );
 }

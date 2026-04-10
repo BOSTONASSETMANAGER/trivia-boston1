@@ -1,22 +1,28 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { GameState, GamePhase, AnswerResult, WeeklyTrivia } from '@/types/game';
+import { GameState, GamePhase, AnswerResult } from '@/types/game';
 import { getCurrentWeek } from '@/data/questions';
 
-function createInitialState(): GameState {
+function createInitialState(phase: GamePhase = 'auth'): GameState {
   return {
-    phase: 'start',
+    phase,
     currentWeek: getCurrentWeek(),
     currentQuestionIndex: 0,
     results: [],
     selectedAnswer: null,
     timerActive: false,
+    startTimestamp: null,
+    totalTimeMs: null,
   };
 }
 
 export function useGameState() {
-  const [state, setState] = useState<GameState>(createInitialState);
+  const [state, setState] = useState<GameState>(() => createInitialState('auth'));
+
+  const authenticate = useCallback(() => {
+    setState((prev) => ({ ...prev, phase: 'start' as GamePhase }));
+  }, []);
 
   const startGame = useCallback(() => {
     const week = getCurrentWeek();
@@ -27,6 +33,8 @@ export function useGameState() {
       results: [],
       selectedAnswer: null,
       timerActive: true,
+      startTimestamp: Date.now(),
+      totalTimeMs: null,
     });
   }, []);
 
@@ -82,7 +90,14 @@ export function useGameState() {
   const nextQuestion = useCallback(() => {
     setState((prev) => {
       if (prev.currentQuestionIndex >= 2) {
-        return { ...prev, phase: 'finished' as GamePhase };
+        const totalTimeMs = prev.startTimestamp
+          ? Date.now() - prev.startTimestamp
+          : 0;
+        return {
+          ...prev,
+          phase: 'finished' as GamePhase,
+          totalTimeMs,
+        };
       }
 
       return {
@@ -96,11 +111,37 @@ export function useGameState() {
   }, []);
 
   const resetGame = useCallback(() => {
-    setState(createInitialState());
+    setState((prev) => ({
+      ...createInitialState('start'),
+      currentWeek: prev.currentWeek,
+    }));
+  }, []);
+
+  const showLeaderboard = useCallback(() => {
+    setState((prev) => ({ ...prev, phase: 'leaderboard' as GamePhase }));
+  }, []);
+
+  const backToStart = useCallback(() => {
+    setState((prev) => ({
+      ...createInitialState('start'),
+      currentWeek: prev.currentWeek,
+    }));
+  }, []);
+
+  const logoutPhase = useCallback(() => {
+    setState(() => createInitialState('auth'));
+  }, []);
+
+  const showProfile = useCallback(() => {
+    setState((prev) => ({ ...prev, phase: 'profile' as GamePhase }));
+  }, []);
+
+  const showBostonPlus = useCallback(() => {
+    setState((prev) => ({ ...prev, phase: 'bostonplus' as GamePhase }));
   }, []);
 
   const currentQuestion =
-    state.phase !== 'start'
+    state.phase === 'playing' || state.phase === 'revealing'
       ? state.currentWeek.questions[state.currentQuestionIndex]
       : null;
 
@@ -110,10 +151,16 @@ export function useGameState() {
     state,
     currentQuestion,
     score,
+    authenticate,
     startGame,
     selectAnswer,
     handleTimeout,
     nextQuestion,
     resetGame,
+    showLeaderboard,
+    backToStart,
+    logoutPhase,
+    showProfile,
+    showBostonPlus,
   };
 }

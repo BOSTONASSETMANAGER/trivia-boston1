@@ -1,14 +1,26 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { RotateCcw, CheckCircle, XCircle, Clock, Star } from 'lucide-react';
+import {
+  RotateCcw,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Star,
+  Trophy,
+} from 'lucide-react';
 import { AnswerResult, WeeklyTrivia } from '@/types/game';
+import { saveSession } from '@/app/actions/sessions';
 
 interface ResultsScreenProps {
   results: AnswerResult[];
   week: WeeklyTrivia;
   score: number;
+  totalTimeMs: number;
+  userId: string;
   onRestart: () => void;
+  onShowLeaderboard: () => void;
 }
 
 function getMessage(score: number): { text: string; sub: string } {
@@ -26,14 +38,34 @@ function getMessage(score: number): { text: string; sub: string } {
   }
 }
 
+function formatTime(ms: number): string {
+  const totalSec = Math.floor(ms / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
 export default function ResultsScreen({
   results,
   week,
   score,
+  totalTimeMs,
+  userId,
   onRestart,
+  onShowLeaderboard,
 }: ResultsScreenProps) {
   const { text: message, sub: subtitle } = getMessage(score);
   const isPerfect = score === 3;
+  const savedRef = useRef(false);
+
+  // Save the session to Supabase once on mount
+  useEffect(() => {
+    if (savedRef.current) return;
+    savedRef.current = true;
+    saveSession(userId, week.weekNumber, score, totalTimeMs).catch(() => {
+      /* silent fail — player shouldn't block on network */
+    });
+  }, [userId, week.weekNumber, score, totalTimeMs]);
 
   return (
     <motion.div
@@ -41,11 +73,11 @@ export default function ResultsScreen({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="relative z-10 flex min-h-[100dvh] flex-col items-center justify-center px-6"
+      className="relative z-10 flex min-h-[100dvh] flex-col items-center justify-center px-6 py-10"
     >
       <div className="glass-card-elevated w-full max-w-sm rounded-2xl p-8">
         {/* Score */}
-        <div className="mb-6 text-center">
+        <div className="mb-4 text-center">
           <motion.div
             initial={{ scale: 0, rotate: -10 }}
             animate={{ scale: [0, 1.4, 1], rotate: [10, -5, 0] }}
@@ -76,8 +108,8 @@ export default function ResultsScreen({
                 <Star
                   className={`h-5 w-5 ${
                     i < score
-                      ? 'fill-secondary text-secondary drop-shadow-[0_0_6px_rgba(63,255,139,0.5)]'
-                      : 'text-surface-variant/40'
+                      ? 'fill-secondary text-secondary drop-shadow-[0_0_6px_rgba(13,148,136,0.55)]'
+                      : 'text-surface-variant/30'
                   }`}
                 />
               </motion.div>
@@ -100,9 +132,20 @@ export default function ResultsScreen({
           >
             {subtitle}
           </motion.p>
+
+          {/* Total time */}
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.75 }}
+            className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-outline-variant/30 bg-surface-variant/20 px-3 py-1.5 font-mono text-xs tabular-nums text-outline"
+          >
+            <Clock className="h-3.5 w-3.5 text-primary/70" />
+            {formatTime(totalTimeMs)}
+          </motion.div>
         </div>
 
-        <div className="divider-glow mx-auto mb-6 w-20" />
+        <div className="divider-glow mx-auto mb-5 mt-3 w-20" />
 
         {/* Week title */}
         <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-wider text-primary/60">
@@ -110,7 +153,7 @@ export default function ResultsScreen({
         </p>
 
         {/* Question results */}
-        <div className="mb-8 space-y-2.5">
+        <div className="mb-6 space-y-2.5">
           {results.map((result, i) => {
             const question = week.questions[i];
             return (
@@ -147,7 +190,7 @@ export default function ResultsScreen({
           })}
         </div>
 
-        {/* Restart button */}
+        {/* Primary: restart */}
         <motion.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -155,10 +198,23 @@ export default function ResultsScreen({
           whileTap={{ scale: 0.97 }}
           whileHover={{ y: -2 }}
           onClick={onRestart}
-          className="btn-shine flex w-full items-center justify-center gap-2.5 rounded-xl bg-primary px-6 py-4 font-headline text-lg font-semibold text-on-primary shadow-[0_4px_20px_rgba(142,171,255,0.3)] transition-all hover:shadow-[0_6px_30px_rgba(142,171,255,0.4)] active:bg-primary-dim touch-manipulation"
+          className="boston-cta btn-shine flex w-full items-center justify-center gap-2.5 px-6 py-4 text-sm touch-manipulation"
         >
           <RotateCcw className="h-5 w-5" />
           Jugar de nuevo
+        </motion.button>
+
+        {/* Secondary: leaderboard */}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={onShowLeaderboard}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-outline-variant/30 bg-surface-variant/20 px-6 py-3 text-sm font-semibold text-outline transition-all hover:border-primary/40 hover:text-primary touch-manipulation"
+        >
+          <Trophy className="h-4 w-4" />
+          Ver ranking
         </motion.button>
       </div>
 
@@ -166,8 +222,8 @@ export default function ResultsScreen({
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="mt-10 text-[11px] tracking-wider text-outline/50"
+        transition={{ delay: 1.05 }}
+        className="mt-8 text-[11px] tracking-wider text-outline/50"
       >
         BOSTON ASSET MANAGER SA
       </motion.p>

@@ -21,7 +21,15 @@ export type AnswerResult = {
   timeRemaining: number;
 };
 
-export type GamePhase = 'start' | 'playing' | 'revealing' | 'finished';
+export type GamePhase =
+  | 'auth'
+  | 'start'
+  | 'playing'
+  | 'revealing'
+  | 'finished'
+  | 'leaderboard'
+  | 'profile'
+  | 'bostonplus';
 
 export interface GameState {
   phase: GamePhase;
@@ -30,4 +38,22 @@ export interface GameState {
   results: AnswerResult[];
   selectedAnswer: number | null;
   timerActive: boolean;
+  startTimestamp: number | null;
+  totalTimeMs: number | null;
+}
+
+export interface TriviaUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface LeaderboardEntry {
+  sessionId: string;
+  userId: string;
+  name: string;
+  weekNumber: number;
+  score: number;
+  totalTimeMs: number;
+  completedAt: string;
 }
