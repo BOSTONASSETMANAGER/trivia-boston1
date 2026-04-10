@@ -21,28 +21,26 @@ function prettifyTitle(filename: string): string {
 
 async function walk(dir: string, rel: string[] = []): Promise<DocEntry[]> {
   const out: DocEntry[] = [];
-  let entries: Awaited<ReturnType<typeof fs.readdir>>;
   try {
-    entries = await fs.readdir(dir, { withFileTypes: true });
-  } catch {
-    return out;
-  }
-
-  for (const entry of entries) {
-    if (entry.name.startsWith('.')) continue;
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      const nested = await walk(full, [...rel, entry.name]);
-      out.push(...nested);
-    } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.md')) {
-      const slugParts = [...rel, entry.name.replace(/\.md$/i, '')];
-      out.push({
-        slug: slugParts,
-        relativePath: path.posix.join(...rel, entry.name),
-        title: prettifyTitle(entry.name),
-        group: rel.length === 0 ? 'Raíz' : rel.join(' / '),
-      });
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.name.startsWith('.')) continue;
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        const nested = await walk(full, [...rel, entry.name]);
+        out.push(...nested);
+      } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.md')) {
+        const slugParts = [...rel, entry.name.replace(/\.md$/i, '')];
+        out.push({
+          slug: slugParts,
+          relativePath: path.posix.join(...rel, entry.name),
+          title: prettifyTitle(entry.name),
+          group: rel.length === 0 ? 'Raíz' : rel.join(' / '),
+        });
+      }
     }
+  } catch {
+    // ignore — return whatever we collected so far
   }
   return out;
 }
