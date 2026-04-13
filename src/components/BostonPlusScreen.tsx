@@ -91,51 +91,51 @@ export default function BostonPlusScreen() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: fadeDuration }}
-      className="relative z-10 flex min-h-[100dvh] flex-col items-center px-5"
+      className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 sm:px-6"
       style={{
-        paddingTop: 'max(3rem, calc(env(safe-area-inset-top, 0px) + 3rem))',
-        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 8rem)',
+        paddingTop: 'max(2rem, calc(env(safe-area-inset-top, 0px) + 2rem))',
+        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6rem)',
       }}
     >
-      <div className="w-full max-w-sm">
-        {/* Header */}
+      {/* White container — wider on desktop */}
+      <div className="glass-card-elevated flex w-full max-w-sm sm:max-w-lg md:max-w-3xl flex-col rounded-2xl p-5 sm:p-6 md:p-8">
+        {/* Header — compact */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-6 text-center"
+          className="mb-4 sm:mb-5 text-center"
         >
-          <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1">
+          <div className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1">
             <Sparkles className="h-3 w-3 text-primary" />
             <span className="boston-overline !text-[10px]">Boston+</span>
           </div>
-          <h1 className="boston-title mb-1 text-3xl">Suscripciones</h1>
-          <div className="divider-glow mx-auto mt-3 w-20" />
-          <p className="mt-3 text-sm leading-relaxed text-outline/90">
+          <h1 className="boston-title mb-1 text-2xl sm:text-3xl">Suscripciones</h1>
+          <p className="mx-auto mt-2 max-w-md text-xs sm:text-sm leading-relaxed text-outline/90">
             Analisis de mercado, informes financieros y alertas de oportunidades
             para decisiones de inversion informadas.
           </p>
         </motion.div>
 
-        {/* Benefits strip */}
+        {/* Benefits strip — inline on desktop */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-card-elevated mb-6 rounded-2xl p-4"
+          className="mb-4 sm:mb-5 rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-3 sm:p-4"
         >
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-4 gap-2 sm:gap-4">
             {BENEFITS.map((b) => {
               const Icon = b.icon;
               return (
                 <div
                   key={b.label}
-                  className="flex flex-col items-center gap-1.5"
+                  className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2 sm:justify-center"
                 >
-                  <div className="boston-icon-box-sm">
-                    <Icon className="h-5 w-5" strokeWidth={1.8} />
+                  <div className="boston-icon-box-sm sm:h-9 sm:w-9">
+                    <Icon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={1.8} />
                   </div>
-                  <span className="text-center text-[10px] font-medium leading-tight text-on-surface/80">
+                  <span className="text-center text-[9px] sm:text-[11px] font-medium leading-tight text-on-surface/80">
                     {b.label}
                   </span>
                 </div>
@@ -144,18 +144,18 @@ export default function BostonPlusScreen() {
           </div>
         </motion.div>
 
-        {/* Section title */}
+        {/* Section label */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="boston-overline mb-3 text-center"
+          className="boston-overline mb-3 sm:mb-4"
         >
           Elegi tu plan
         </motion.p>
 
-        {/* Plan cards */}
-        <div className="space-y-4">
+        {/* Plan cards — stacked on mobile, 3 columns on md+ */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4">
           {PLANS.map((plan, i) => (
             <PlanCard
               key={plan.id}
@@ -171,12 +171,12 @@ export default function BostonPlusScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.75 }}
-          className="mt-6 rounded-2xl border border-outline-variant/40 bg-[#f8fafc] p-4 text-center"
+          className="rounded-xl border border-[#e2e8f0] bg-[#f8fafc] p-3 sm:p-4 text-center"
         >
-          <p className="mb-1 text-[11px] font-semibold text-on-surface">
+          <p className="mb-0.5 text-[11px] sm:text-xs font-semibold text-on-surface">
             Planes trimestrales con 10% de descuento
           </p>
-          <p className="text-[10px] text-outline">
+          <p className="text-[10px] sm:text-[11px] text-outline">
             Pago con tarjeta (Mercado Pago) o transferencia bancaria.
           </p>
         </motion.div>
@@ -206,16 +206,11 @@ function PlanCard({
           ? { delay: 0, duration: 0.15 }
           : { delay, type: 'spring', stiffness: 200, damping: 22 }
       }
-      className={`relative rounded-2xl p-5 ${
+      className={`relative flex flex-col rounded-2xl p-4 sm:p-5 ${
         isHighlight
-          ? 'glass-card-elevated border-primary/40 shadow-[0_10px_35px_rgba(37,99,235,0.18)]'
-          : 'glass-card'
+          ? 'bg-white border-[1.5px] border-primary/35 shadow-[0_10px_35px_rgba(37,99,235,0.18)]'
+          : 'bg-[#f8fafc] border border-[#e2e8f0]'
       }`}
-      style={
-        isHighlight
-          ? { borderWidth: '1.5px', borderColor: 'rgba(37,99,235,0.35)' }
-          : undefined
-      }
     >
       {/* Ribbon */}
       {plan.ribbon && (
@@ -229,42 +224,35 @@ function PlanCard({
         </div>
       )}
 
-      {/* Header row */}
-      <div className="mb-4 flex items-start gap-3">
+      {/* Header */}
+      <div className="mb-3 flex items-center gap-2.5">
         <div
-          className={isHighlight ? 'boston-icon-box' : 'boston-icon-box-sm'}
-          style={
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
             isHighlight
-              ? {
-                  background:
-                    'linear-gradient(135deg, rgba(29,57,105,0.15), rgba(37,99,235,0.18))',
-                }
-              : undefined
-          }
+              ? 'bg-gradient-to-br from-[rgba(29,57,105,0.15)] to-[rgba(37,99,235,0.18)] text-[#1d3969]'
+              : 'bg-gradient-to-br from-[rgba(29,57,105,0.08)] to-[rgba(37,99,235,0.08)] text-[#1d3969]'
+          }`}
         >
-          <Icon
-            className={isHighlight ? 'h-7 w-7' : 'h-5 w-5'}
-            strokeWidth={1.8}
-          />
+          <Icon className="h-5 w-5" strokeWidth={1.8} />
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="boston-title text-lg">{plan.name}</h3>
-          <p className="text-[11px] text-outline">{plan.tagline}</p>
+          <h3 className="boston-title text-base sm:text-lg leading-tight">{plan.name}</h3>
+          <p className="text-[10px] sm:text-[11px] text-outline">{plan.tagline}</p>
         </div>
       </div>
 
       {/* Price */}
-      <div className="mb-4 flex items-baseline gap-1.5 border-b border-outline-variant/40 pb-4">
+      <div className="mb-3 flex items-baseline gap-1.5 border-b border-[#e2e8f0] pb-3">
         <span
           className={`font-headline font-bold tabular-nums ${
             isHighlight ? 'text-primary' : 'text-on-surface'
-          } ${plan.priceMonthly === 'Gratis' ? 'text-2xl' : 'text-3xl'}`}
+          } ${plan.priceMonthly === 'Gratis' ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'}`}
           style={{ letterSpacing: '-0.02em' }}
         >
           {plan.priceMonthly}
         </span>
         {plan.priceMonthly !== 'Gratis' && (
-          <span className="text-xs text-outline">/mes</span>
+          <span className="text-[11px] text-outline">/mes</span>
         )}
         {plan.priceQuarterly && (
           <span className="ml-auto text-[10px] text-outline/80">
@@ -274,7 +262,7 @@ function PlanCard({
       </div>
 
       {/* Features */}
-      <ul className="mb-5 space-y-2">
+      <ul className="mb-4 flex-1 space-y-1.5">
         {plan.features.map((feature, i) => (
           <li key={i} className="flex items-start gap-2">
             <div
@@ -286,7 +274,7 @@ function PlanCard({
             >
               <Check className="h-2.5 w-2.5" strokeWidth={3} />
             </div>
-            <span className="text-[12px] leading-snug text-on-surface/85">
+            <span className="text-[11px] sm:text-[12px] leading-snug text-on-surface/85">
               {feature}
             </span>
           </li>
@@ -298,14 +286,10 @@ function PlanCard({
         <button
           type="button"
           aria-label={`Consultar plan ${plan.name}`}
-          className="boston-cta btn-shine flex min-h-[48px] w-full items-center justify-center gap-2 px-4 py-3 text-xs touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white/80"
+          className="boston-cta btn-shine flex min-h-[44px] w-full items-center justify-center gap-2 px-4 py-2.5 text-[11px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          <MessageCircle
-            className="h-3.5 w-3.5"
-            aria-hidden="true"
-            focusable="false"
-          />
+          <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
           Consultar plan
         </button>
       ) : (
@@ -316,7 +300,7 @@ function PlanCard({
               ? `Comenzar gratis con el plan ${plan.name}`
               : `Consultar plan ${plan.name}`
           }
-          className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-primary/30 bg-white px-4 py-3 text-xs font-semibold uppercase tracking-wider text-primary transition-all hover:bg-primary/5 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white/80 touch-manipulation"
+          className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-primary/30 bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-primary transition-all hover:bg-primary/5 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 touch-manipulation"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           {plan.priceMonthly === 'Gratis' ? 'Comenzar gratis' : 'Consultar plan'}
