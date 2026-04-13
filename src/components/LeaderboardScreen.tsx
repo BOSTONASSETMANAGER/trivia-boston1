@@ -175,7 +175,7 @@ export default function LeaderboardScreen({
                     transition={rowTransition}
                     className={`flex items-center gap-3 rounded-xl border p-3 ${
                       isCurrent
-                        ? 'border-primary/40 bg-primary/10 shadow-[0_4px_15px_rgba(37,99,235,0.15)]'
+                        ? 'border-primary/40 bg-[#f8fafc] shadow-[0_4px_15px_rgba(37,99,235,0.15)]'
                         : 'glass-card'
                     }`}
                     style={{ contain: 'layout paint' }}
@@ -262,10 +262,10 @@ function PodiumBlock({
       <div
         className={`${heightClass} flex w-full items-start justify-center rounded-t-xl border pt-2 ${
           highlight
-            ? 'border-primary/50 bg-gradient-to-t from-primary/20 to-primary/5 shadow-[0_-4px_15px_rgba(37,99,235,0.15)]'
+            ? 'border-primary/50 border-l-4 border-l-primary bg-white shadow-[0_-4px_15px_rgba(37,99,235,0.15)]'
             : isCurrent
-              ? 'border-primary/40 bg-gradient-to-t from-primary/15 to-primary/5'
-              : 'border-outline-variant bg-gradient-to-t from-white/70 to-white/30'
+              ? 'border-primary/40 bg-[#f8fafc]'
+              : 'border-outline-variant bg-white'
         }`}
       >
         <span

@@ -171,7 +171,7 @@ export default function BostonPlusScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.75 }}
-          className="mt-6 rounded-2xl border border-outline-variant/40 bg-white/40 p-4 text-center"
+          className="mt-6 rounded-2xl border border-outline-variant/40 bg-[#f8fafc] p-4 text-center"
         >
           <p className="mb-1 text-[11px] font-semibold text-on-surface">
             Planes trimestrales con 10% de descuento
@@ -316,7 +316,7 @@ function PlanCard({
               ? `Comenzar gratis con el plan ${plan.name}`
               : `Consultar plan ${plan.name}`
           }
-          className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-primary/30 bg-white/60 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-primary transition-all hover:bg-primary/5 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white/80 touch-manipulation"
+          className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-primary/30 bg-white px-4 py-3 text-xs font-semibold uppercase tracking-wider text-primary transition-all hover:bg-primary/5 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white/80 touch-manipulation"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           {plan.priceMonthly === 'Gratis' ? 'Comenzar gratis' : 'Consultar plan'}

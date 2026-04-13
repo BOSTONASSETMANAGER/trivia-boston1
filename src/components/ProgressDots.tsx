@@ -21,7 +21,7 @@ export default function ProgressDots({
         const result = results[i];
         const isCurrent = i === currentIndex;
 
-        let dotColor = 'bg-surface-variant/50';
+        let dotColor = 'bg-[#e2e8f0]';
         let glowClass = '';
         if (result) {
           dotColor = result.isCorrect ? 'bg-secondary' : 'bg-tertiary';

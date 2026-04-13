@@ -53,7 +53,7 @@ export default function AnswerOption({
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
     >
-      <span className="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-variant/40 font-headline text-sm font-bold text-primary/80 border border-primary/10">
+      <span className="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f8fafc] font-headline text-sm font-bold text-primary/80 border border-primary/10">
         {label}
       </span>
       <span className="leading-snug">{text}</span>

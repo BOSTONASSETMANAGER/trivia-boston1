@@ -53,7 +53,7 @@ export default function BottomNav({ active, onNavigate }: BottomNavProps) {
     >
       <div
         role="tablist"
-        className="glass-panel flex items-center gap-1 rounded-full border px-2 py-2 shadow-[0_10px_40px_rgba(30,64,175,0.18)] backdrop-blur-2xl"
+        className="glass-panel flex items-center gap-1 rounded-full border px-2 py-2 shadow-[0_10px_40px_rgba(30,64,175,0.18)]"
       >
         {TABS.map((tab) => {
           const isActive = active === tab.id;

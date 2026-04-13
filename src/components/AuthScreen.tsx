@@ -96,7 +96,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="relative mb-5 grid grid-cols-2 rounded-xl border border-outline-variant/30 bg-surface-variant/20 p-1 sm:mb-6"
+          className="relative mb-5 grid grid-cols-2 rounded-xl border border-outline-variant bg-[#f8fafc] p-1 sm:mb-6"
         >
           {(['login', 'register'] as Tab[]).map((t) => (
             <button
@@ -148,7 +148,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={pending}
-                    className="w-full rounded-xl border border-outline-variant/30 bg-surface-variant/20 px-4 py-3.5 pl-10 text-base text-on-surface placeholder:text-outline/60 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+                    className="w-full rounded-xl border border-outline-variant bg-white px-4 py-3.5 pl-10 text-base text-on-surface placeholder:text-outline/60 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
                     autoComplete="name"
                   />
                 </label>
@@ -164,7 +164,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={pending}
-              className="w-full rounded-xl border border-outline-variant/30 bg-surface-variant/20 px-4 py-3.5 pl-10 text-base text-on-surface placeholder:text-outline/60 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+              className="w-full rounded-xl border border-outline-variant bg-white px-4 py-3.5 pl-10 text-base text-on-surface placeholder:text-outline/60 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
               autoComplete="email"
             />
           </label>
@@ -177,7 +177,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={pending}
-              className="w-full rounded-xl border border-outline-variant/30 bg-surface-variant/20 px-4 py-3.5 pl-10 text-base text-on-surface placeholder:text-outline/60 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+              className="w-full rounded-xl border border-outline-variant bg-white px-4 py-3.5 pl-10 text-base text-on-surface placeholder:text-outline/60 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
               autoComplete={isRegister ? 'new-password' : 'current-password'}
             />
           </label>

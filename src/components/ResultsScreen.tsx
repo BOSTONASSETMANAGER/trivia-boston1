@@ -138,7 +138,7 @@ export default function ResultsScreen({
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.75 }}
-            className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-outline-variant/30 bg-surface-variant/20 px-3 py-1.5 font-mono text-xs tabular-nums text-outline"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-outline-variant bg-[#f8fafc] px-3 py-1.5 font-mono text-xs tabular-nums text-outline"
           >
             <Clock className="h-3.5 w-3.5 text-primary/70" />
             {formatTime(totalTimeMs)}
@@ -165,7 +165,7 @@ export default function ResultsScreen({
                 className={`flex items-start gap-2.5 rounded-xl p-2.5 sm:gap-3 sm:p-3 ${
                   result.isCorrect
                     ? 'bg-secondary/5 border border-secondary/10'
-                    : 'bg-surface-variant/20 border border-outline-variant/10'
+                    : 'bg-[#f8fafc] border border-outline-variant'
                 }`}
               >
                 <div className="mt-0.5 shrink-0">
@@ -211,7 +211,7 @@ export default function ResultsScreen({
           transition={{ delay: 1 }}
           whileTap={{ scale: 0.98 }}
           onClick={onShowLeaderboard}
-          className="mt-3 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-outline-variant/30 bg-surface-variant/20 px-6 py-3 text-sm font-semibold text-outline transition-all hover:border-primary/40 hover:text-primary touch-manipulation"
+          className="mt-3 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-outline-variant bg-white px-6 py-3 text-sm font-semibold text-outline transition-all hover:border-primary/40 hover:text-primary touch-manipulation"
         >
           <Trophy className="h-4 w-4" />
           Ver ranking

@@ -101,11 +101,11 @@ export default function StartScreen({
           transition={{ delay: 0.55 }}
           className="mb-6 flex items-center justify-center gap-2.5 sm:mb-8 sm:gap-3"
         >
-          <div className="flex items-center gap-1.5 rounded-full border border-outline-variant bg-white/60 px-3 py-1.5 text-xs font-medium text-on-surface">
+          <div className="flex items-center gap-1.5 rounded-full border border-outline-variant bg-white px-3 py-1.5 text-xs font-medium text-on-surface">
             <Zap className="h-3.5 w-3.5 text-primary" strokeWidth={2} />
             <span>3 preguntas</span>
           </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-outline-variant bg-white/60 px-3 py-1.5 text-xs font-medium text-on-surface">
+          <div className="flex items-center gap-1.5 rounded-full border border-outline-variant bg-white px-3 py-1.5 text-xs font-medium text-on-surface">
             <Clock className="h-3.5 w-3.5 text-primary" strokeWidth={2} />
             <span>8 seg c/u</span>
           </div>

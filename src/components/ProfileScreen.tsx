@@ -112,7 +112,7 @@ export default function ProfileScreen({
               </span>
             </div>
             <div
-              className="h-2 overflow-hidden rounded-full bg-surface-variant/20"
+              className="h-2 overflow-hidden rounded-full bg-[#e2e8f0]"
               role="progressbar"
               aria-valuenow={unlockedCount}
               aria-valuemin={0}
@@ -193,7 +193,7 @@ export default function ProfileScreen({
           transition={{ delay: prefersReducedMotion ? 0 : 0.7 }}
           onClick={onLogout}
           aria-label="Cerrar sesión"
-          className="mt-8 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-tertiary/40 bg-white/60 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-tertiary transition-all hover:bg-tertiary/10 hover:border-tertiary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white/80 touch-manipulation"
+          className="mt-8 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-tertiary/40 bg-white px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-tertiary transition-all hover:bg-tertiary/10 hover:border-tertiary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white/80 touch-manipulation"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           <LogOut className="h-4 w-4" aria-hidden="true" focusable="false" />
@@ -246,7 +246,7 @@ function MedalCard({
         className={`absolute top-1.5 right-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider ${
           unlocked
             ? `${tierColors.text} ${tierColors.bg}`
-            : 'bg-surface-variant/20 text-outline/50'
+            : 'bg-[#f8fafc] text-outline/50'
         }`}
       >
         {medal.tier}
@@ -257,7 +257,7 @@ function MedalCard({
         className={`mt-2 mb-1.5 flex h-12 w-12 items-center justify-center rounded-full ${
           unlocked
             ? `${tierColors.bg} ${tierColors.text}`
-            : 'bg-surface-variant/20 text-outline/40'
+            : 'bg-[#f8fafc] text-outline/40'
         }`}
       >
         {unlocked ? (
