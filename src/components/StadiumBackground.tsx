@@ -1,7 +1,6 @@
 'use client';
 
-const IMAGE_SRC =
-  'https://ss4cnmwrqckodj1i.public.blob.vercel-storage.com/background.jpg';
+const IMAGE_SRC = '/background-trivia.jpg';
 
 export default function StadiumBackground() {
   return (
