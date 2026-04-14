@@ -19,7 +19,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [pin, setPin] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -32,8 +32,8 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
     startTransition(async () => {
       const result =
         tab === 'register'
-          ? await registerUser(name, email, password, fingerprint, phone)
-          : await loginUser(email, password, fingerprint);
+          ? await registerUser(name, email, pin, fingerprint, phone)
+          : await loginUser(email, pin, fingerprint);
 
       if (result.ok) {
         onAuthenticated(result.user);
@@ -190,12 +190,15 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-outline/60" />
             <input
               type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={4}
+              placeholder="PIN de 4 digitos"
+              value={pin}
+              onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
               disabled={pending}
               className="w-full rounded-xl border border-outline-variant bg-white px-4 py-3.5 pl-10 text-base text-on-surface placeholder:text-outline/60 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-              autoComplete={isRegister ? 'new-password' : 'current-password'}
+              autoComplete="off"
             />
           </label>
 

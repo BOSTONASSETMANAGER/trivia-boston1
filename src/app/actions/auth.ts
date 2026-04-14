@@ -51,8 +51,8 @@ export async function registerUser(
   if (!trimmedName || !trimmedEmail || !password) {
     return { ok: false, error: 'Completá todos los campos' };
   }
-  if (password.length < 4) {
-    return { ok: false, error: 'La contraseña debe tener al menos 4 caracteres' };
+  if (!/^\d{4}$/.test(password)) {
+    return { ok: false, error: 'El PIN debe ser de 4 digitos' };
   }
   if (!fingerprintHash || fingerprintHash.length < 10) {
     return { ok: false, error: 'No se pudo verificar el dispositivo' };
@@ -155,6 +155,9 @@ export async function loginUser(
   if (!trimmedEmail || !password) {
     return { ok: false, error: 'Completá todos los campos' };
   }
+  if (!/^\d{4}$/.test(password)) {
+    return { ok: false, error: 'El PIN debe ser de 4 digitos' };
+  }
   if (!fingerprintHash || fingerprintHash.length < 10) {
     return { ok: false, error: 'No se pudo verificar el dispositivo' };
   }
@@ -189,13 +192,13 @@ export async function loginUser(
 
   if (!user) {
     await logAttempt('login', trimmedEmail, ipHash, fingerprintHash, false);
-    return { ok: false, error: 'Email o contraseña incorrectos' };
+    return { ok: false, error: 'Email o PIN incorrectos' };
   }
 
   const valid = await verifyPassword(password, user.password_hash);
   if (!valid) {
     await logAttempt('login', trimmedEmail, ipHash, fingerprintHash, false);
-    return { ok: false, error: 'Email o contraseña incorrectos' };
+    return { ok: false, error: 'Email o PIN incorrectos' };
   }
 
   // Anti-abuse: verificar que este fingerprint pertenezca a este user
