@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { LogIn, UserPlus, Shield, Mail, Lock, User } from 'lucide-react';
+import Image from 'next/image';
+import { LogIn, UserPlus, Mail, Lock, User } from 'lucide-react';
 import { registerUser, loginUser } from '@/app/actions/auth';
 import { getFingerprint } from '@/lib/auth/fingerprint';
 import type { TriviaUser } from '@/types/game';
@@ -66,12 +67,15 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           transition={{ delay: 0.15, type: 'spring', stiffness: 200, damping: 15 }}
           className="mx-auto mb-6"
         >
-          <div className="relative mx-auto flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20">
-            <div className="absolute inset-0 rounded-2xl border border-primary/20" />
-            <div className="absolute inset-2 rounded-xl bg-primary/5" />
-            <Shield className="relative h-9 w-9 text-primary" strokeWidth={1.5} />
-            <div className="absolute -top-1 -right-1 h-3 w-3 border-t border-r border-primary/30 rounded-tr-md" />
-            <div className="absolute -bottom-1 -left-1 h-3 w-3 border-b border-l border-primary/30 rounded-bl-md" />
+          <div className="relative mx-auto flex h-20 w-20 items-center justify-center sm:h-24 sm:w-24">
+            <Image
+              src="/trophy-mundial.png"
+              alt="Copa del Mundo"
+              width={96}
+              height={96}
+              className="h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(29,57,105,0.2)]"
+              priority
+            />
           </div>
         </motion.div>
 
