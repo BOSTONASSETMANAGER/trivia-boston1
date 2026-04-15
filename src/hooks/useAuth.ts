@@ -7,6 +7,7 @@ import {
   saveStoredUser,
   clearStoredUser,
 } from '@/lib/auth/session';
+import { logoutUser } from '@/app/actions/auth';
 
 export function useAuth() {
   const [user, setUser] = useState<TriviaUser | null>(null);
@@ -22,10 +23,22 @@ export function useAuth() {
     setUser(u);
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    clearStoredUser();
+    setUser(null);
+    try {
+      await logoutUser();
+    } catch {
+      /* best-effort: cookie still cleared by the next request */
+    }
+  }, []);
+
+  // Used when the server tells us our session was displaced. Skips the
+  // server roundtrip — the session is already revoked in the DB.
+  const handleSessionExpired = useCallback(() => {
     clearStoredUser();
     setUser(null);
   }, []);
 
-  return { user, hydrated, setAuthenticated, logout };
+  return { user, hydrated, setAuthenticated, logout, handleSessionExpired };
 }

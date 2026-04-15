@@ -15,7 +15,8 @@ import BostonPlusScreen from './BostonPlusScreen';
 import BottomNav, { type NavTab } from './BottomNav';
 
 export default function TriviaGame() {
-  const { user, hydrated, setAuthenticated, logout } = useAuth();
+  const { user, hydrated, setAuthenticated, logout, handleSessionExpired } =
+    useAuth();
   const {
     state,
     currentQuestion,
@@ -53,6 +54,16 @@ export default function TriviaGame() {
   function handleLogout() {
     logout();
     logoutPhase();
+  }
+
+  function handleSessionDisplaced() {
+    handleSessionExpired();
+    logoutPhase();
+    if (typeof window !== 'undefined') {
+      window.alert(
+        'Se inició sesión desde otro dispositivo. Volvé a iniciar sesión.'
+      );
+    }
   }
 
   function handleNav(tab: NavTab) {
@@ -139,6 +150,7 @@ export default function TriviaGame() {
             userId={user.id}
             onRestart={resetGame}
             onShowLeaderboard={showLeaderboard}
+            onSessionExpired={handleSessionDisplaced}
           />
         )}
 

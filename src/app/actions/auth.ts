@@ -3,6 +3,10 @@
 import { headers } from 'next/headers';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { hashPassword, verifyPassword, sha256Hex } from '@/lib/auth/hash';
+import {
+  createAuthSession,
+  revokeCurrentSession,
+} from '@/lib/auth/auth-session';
 import type { TriviaUser } from '@/types/game';
 
 type AuthResult =
@@ -10,7 +14,7 @@ type AuthResult =
   | { ok: false; error: string };
 
 // ─── Anti-abuse limits ──────────────────────────────────────
-const MAX_REGISTRATIONS_PER_IP_24H = 3;
+const MAX_ACCOUNTS_PER_IP = 2;
 const MAX_FAILED_LOGINS_PER_15MIN = 5;
 
 async function getClientIp(): Promise<string> {
@@ -80,25 +84,23 @@ export async function registerUser(
     };
   }
 
-  // Anti-abuse: max N registros por IP en 24h
-  const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  const { count: ipRegCount } = await supabase
-    .from('trivia_attempts')
-    .select('id', { count: 'exact', head: true })
-    .eq('kind', 'register')
-    .eq('success', true)
-    .eq('ip_hash', ipHash)
-    .gte('created_at', since24h);
+  // Anti-abuse: máximo N cuentas distintas por IP (lifetime).
+  // Cuenta usuarios únicos que alguna vez se registraron/loguearon desde esta IP.
+  const { data: ipFingerprints } = await supabase
+    .from('trivia_fingerprints')
+    .select('user_id')
+    .eq('ip_hash', ipHash);
 
-  if ((ipRegCount ?? 0) >= MAX_REGISTRATIONS_PER_IP_24H) {
+  const distinctUsers = new Set((ipFingerprints ?? []).map((f) => f.user_id));
+  if (distinctUsers.size >= MAX_ACCOUNTS_PER_IP) {
     await logAttempt('register', trimmedEmail, ipHash, fingerprintHash, false);
     return {
       ok: false,
-      error: 'Demasiados registros desde esta red. Intentá mas tarde.',
+      error: 'Ya hay demasiadas cuentas registradas desde esta red',
     };
   }
 
-  // Email unico
+  // Email único
   const { data: existing } = await supabase
     .from('trivia_users')
     .select('id')
@@ -129,7 +131,6 @@ export async function registerUser(
     return { ok: false, error: 'No se pudo crear la cuenta' };
   }
 
-  // Registrar el fingerprint del dispositivo
   await supabase.from('trivia_fingerprints').insert({
     user_id: inserted.id,
     ip_hash: ipHash,
@@ -138,6 +139,13 @@ export async function registerUser(
   });
 
   await logAttempt('register', trimmedEmail, ipHash, fingerprintHash, true);
+
+  await createAuthSession({
+    userId: inserted.id,
+    fingerprintHash,
+    ipHash,
+    userAgent,
+  });
 
   return {
     ok: true,
@@ -163,6 +171,8 @@ export async function loginUser(
   }
 
   const ip = await getClientIp();
+  const h = await headers();
+  const userAgent = h.get('user-agent') ?? '';
   const ipHash = await sha256Hex(ip);
   const supabase = createSupabaseServerClient();
 
@@ -217,21 +227,30 @@ export async function loginUser(
     };
   }
 
-  // Si no hay fingerprint registrado aun para este user, lo registramos
   if (!fpOwner) {
-    const h = await headers();
     await supabase.from('trivia_fingerprints').insert({
       user_id: user.id,
       ip_hash: ipHash,
       fingerprint_hash: fingerprintHash,
-      user_agent: h.get('user-agent') ?? '',
+      user_agent: userAgent,
     });
   }
 
   await logAttempt('login', trimmedEmail, ipHash, fingerprintHash, true);
 
+  await createAuthSession({
+    userId: user.id,
+    fingerprintHash,
+    ipHash,
+    userAgent,
+  });
+
   return {
     ok: true,
     user: { id: user.id, name: user.name, email: user.email },
   };
+}
+
+export async function logoutUser(): Promise<void> {
+  await revokeCurrentSession();
 }

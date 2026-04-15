@@ -157,9 +157,10 @@ Disponible una vez autenticado en las fases: `start`, `leaderboard`, `profile`, 
 
 | Accion | Archivo | Descripcion |
 |---|---|---|
-| `registerUser(name, email, password, fingerprint)` | `actions/auth.ts` | Crea usuario con password hasheado (PBKDF2) |
-| `loginUser(email, password, fingerprint)` | `actions/auth.ts` | Autentica usuario existente |
-| `saveSession(userId, weekNumber, score, totalTimeMs)` | `actions/sessions.ts` | Guarda resultado de partida |
+| `registerUser(name, email, password, fingerprint, phone?)` | `actions/auth.ts` | Crea usuario con password hasheado (PBKDF2). Aplica anti-abuse y abre sesión auth |
+| `loginUser(email, password, fingerprint)` | `actions/auth.ts` | Autentica usuario existente. Desplaza la sesión previa si la había |
+| `logoutUser()` | `actions/auth.ts` | Revoca la sesión activa del usuario y limpia la cookie httpOnly |
+| `saveSession(userId, weekNumber, score, totalTimeMs)` | `actions/sessions.ts` | Guarda resultado de partida. Requiere sesión auth activa |
 | `getLeaderboard(weekNumber, limit?)` | `actions/leaderboard.ts` | Mejor partida por usuario por semana |
 | `getUserPublicProfile(userId, weekNumber)` | `actions/profile.ts` | Perfil publico (stats de partidas) |
 
@@ -170,10 +171,20 @@ Todas las tablas usan prefijo `trivia_` para aislamiento.
 ### Tablas
 
 **`trivia_users`** — Usuarios registrados
-- `id` (uuid, PK), `name`, `email` (unique), `password_hash`, `created_at`
+- `id` (uuid, PK), `name`, `email` (unique), `phone`, `password_hash`, `created_at`
 
 **`trivia_sessions`** — Partidas completadas
 - `id` (uuid, PK), `user_id` (FK → trivia_users), `week_number`, `score` (0-3), `total_time_ms`, `completed_at`
+
+**`trivia_fingerprints`** — Devices conocidos por usuario
+- `id`, `user_id`, `ip_hash`, `fingerprint_hash`, `user_agent`
+
+**`trivia_attempts`** — Audit log de registros y logins
+- `id`, `kind` (`register`/`login`), `email`, `ip_hash`, `fingerprint_hash`, `success`, `created_at`
+
+**`trivia_auth_sessions`** — Sesiones de autenticacion activas
+- `id` (uuid, PK = token de la cookie httpOnly), `user_id`, `fingerprint_hash`, `ip_hash`, `user_agent`, `created_at`, `last_seen_at`, `revoked_at`, `revoked_reason` (`displaced`/`logout`/`expired`)
+- 1 fila activa (`revoked_at IS NULL`) por `user_id`. Al hacer login se revoca la anterior con `displaced` y se crea una nueva.
 
 ### Vista
 
@@ -183,7 +194,21 @@ Todas las tablas usan prefijo `trivia_` para aislamiento.
 
 - Lectura publica para leaderboard
 - Insert publico (registro abierto, sin Supabase Auth)
-- 1 cuenta por dispositivo (fingerprint)
+- `trivia_auth_sessions` con RLS habilitada (escritura solo via server actions)
+
+### Anti-abuse y sesiones
+
+- **1 cuenta por dispositivo** (fingerprint canvas + UA + screen + timezone hasheados)
+- **Maximo 2 cuentas por IP** (lifetime, sin ventana de tiempo) — bloquea re-registro desde la misma red despues de 2 cuentas
+- **Maximo 5 logins fallidos cada 15 min** por (IP + fingerprint)
+- **1 sesion auth activa por usuario** — al loguearse desde un device nuevo, la sesion previa queda revocada como `displaced`. El device viejo se entera al siguiente server action (recibe `error: 'session_expired'`) y desloguea con aviso al usuario.
+- Cookie de sesion: `trivia_session` (httpOnly, secure, sameSite=Lax, 30 dias). El UUID adentro es el id de la fila en `trivia_auth_sessions`. La revocacion real la maneja el server, no el TTL del cookie.
+
+### Migraciones SQL
+
+Las migraciones viven en `scripts/migrations/`:
+
+- `2026-04-15_auth_sessions.sql` — tabla `trivia_auth_sessions` + indice IP en `trivia_fingerprints`
 
 ## Sistema de medallas
 

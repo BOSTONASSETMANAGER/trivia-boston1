@@ -21,6 +21,7 @@ interface ResultsScreenProps {
   userId: string;
   onRestart: () => void;
   onShowLeaderboard: () => void;
+  onSessionExpired: () => void;
 }
 
 function getMessage(score: number): { text: string; sub: string } {
@@ -53,6 +54,7 @@ export default function ResultsScreen({
   userId,
   onRestart,
   onShowLeaderboard,
+  onSessionExpired,
 }: ResultsScreenProps) {
   const { text: message, sub: subtitle } = getMessage(score);
   const isPerfect = score === 3;
@@ -62,10 +64,16 @@ export default function ResultsScreen({
   useEffect(() => {
     if (savedRef.current) return;
     savedRef.current = true;
-    saveSession(userId, week.weekNumber, score, totalTimeMs).catch(() => {
-      /* silent fail — player shouldn't block on network */
-    });
-  }, [userId, week.weekNumber, score, totalTimeMs]);
+    saveSession(userId, week.weekNumber, score, totalTimeMs)
+      .then((result) => {
+        if (!result.ok && result.error === 'session_expired') {
+          onSessionExpired();
+        }
+      })
+      .catch(() => {
+        /* silent fail — player shouldn't block on network */
+      });
+  }, [userId, week.weekNumber, score, totalTimeMs, onSessionExpired]);
 
   return (
     <motion.div
