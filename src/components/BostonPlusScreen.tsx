@@ -26,6 +26,9 @@ interface Plan {
   ribbon?: string;
 }
 
+const WHATSAPP_URL =
+  'https://web.whatsapp.com/send?phone=5491173643465&text=Hola%2C+me+contacto+desde+bostonam.ar+para+hacer+una+consulta%21';
+
 const PLANS: Plan[] = [
   {
     id: 'freemium',
@@ -282,18 +285,22 @@ function PlanCard({
 
       {/* CTA */}
       {isHighlight ? (
-        <button
-          type="button"
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label={`Consultar plan ${plan.name}`}
           className="boston-cta btn-shine flex min-h-[44px] w-full items-center justify-center gap-2 px-4 py-2.5 text-[11px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
           Consultar plan
-        </button>
+        </a>
       ) : (
-        <button
-          type="button"
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label={
             plan.priceMonthly === 'Gratis'
               ? `Comenzar gratis con el plan ${plan.name}`
@@ -303,7 +310,7 @@ function PlanCard({
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           {plan.priceMonthly === 'Gratis' ? 'Comenzar gratis' : 'Consultar plan'}
-        </button>
+        </a>
       )}
     </motion.div>
   );
