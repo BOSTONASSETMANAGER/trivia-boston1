@@ -14,12 +14,8 @@ interface CreateSessionParams {
 export async function createAuthSession(params: CreateSessionParams): Promise<string | null> {
   const supabase = createSupabaseServerClient();
 
-  // Displace any currently-active session for this user
-  await supabase
-    .from('trivia_auth_sessions')
-    .update({ revoked_at: new Date().toISOString(), revoked_reason: 'displaced' })
-    .eq('user_id', params.userId)
-    .is('revoked_at', null);
+  // Session displacement temporarily disabled: multiple concurrent sessions
+  // per user are allowed to avoid false "logged in from another device" errors.
 
   const { data, error } = await supabase
     .from('trivia_auth_sessions')
