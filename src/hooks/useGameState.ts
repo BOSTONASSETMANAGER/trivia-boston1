@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { GamePhase, AnswerResult, PublicQuestion } from '@/types/game';
 import { startAttempt, submitAttempt } from '@/app/actions/attempts';
 import { weeks } from '@/data/questions';
@@ -73,6 +73,10 @@ export function useGameState() {
   const [state, setState] = useState<GameStateV2>(() =>
     createInitialState('auth')
   );
+
+  // Guards against double-submit from StrictMode re-running effects.
+  // Reset whenever a new attempt starts.
+  const submittedAttemptRef = useRef<string | null>(null);
 
   const authenticate = useCallback(() => {
     setState((prev) => ({ ...prev, phase: 'start' }));
@@ -161,10 +165,7 @@ export function useGameState() {
   const nextQuestion = useCallback(() => {
     setState((prev) => {
       if (prev.currentQuestionIndex >= prev.questions.length - 1) {
-        // About to submit — kick off the async submit outside the setter.
-        if (prev.attemptId) {
-          void submitFinal(prev.attemptId, prev.answers);
-        }
+        // Just flip to submitting; the useEffect below will fire submitFinal.
         return {
           ...prev,
           phase: 'finished',
@@ -182,7 +183,19 @@ export function useGameState() {
         timerActive: true,
       };
     });
-  }, [submitFinal]);
+  }, []);
+
+  // Trigger submit as a side-effect (never inside a setState updater).
+  useEffect(() => {
+    if (
+      state.isSubmitting &&
+      state.attemptId &&
+      submittedAttemptRef.current !== state.attemptId
+    ) {
+      submittedAttemptRef.current = state.attemptId;
+      void submitFinal(state.attemptId, state.answers);
+    }
+  }, [state.isSubmitting, state.attemptId, state.answers, submitFinal]);
 
   const selectAnswer = useCallback((index: number) => {
     setState((prev) => {
