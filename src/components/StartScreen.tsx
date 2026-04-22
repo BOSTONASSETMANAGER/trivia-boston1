@@ -126,7 +126,7 @@ export default function StartScreen({
           </div>
           <div className="flex items-center gap-1.5 rounded-full border border-outline-variant bg-white px-3 py-1.5 text-xs font-medium text-on-surface">
             <Clock className="h-3.5 w-3.5 text-primary" strokeWidth={2} />
-            <span>8 seg c/u</span>
+            <span>15 seg c/u</span>
           </div>
         </motion.div>
 

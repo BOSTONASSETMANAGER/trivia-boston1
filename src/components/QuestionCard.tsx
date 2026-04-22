@@ -9,7 +9,7 @@ import CountdownTimer from './CountdownTimer';
 import AnswerOption from './AnswerOption';
 import ProgressDots from './ProgressDots';
 
-const TIMER_DURATION = 8;
+const TIMER_DURATION = 15;
 const REVEAL_DURATION = 2500;
 const LABELS = ['A', 'B', 'C', 'D'];
 
