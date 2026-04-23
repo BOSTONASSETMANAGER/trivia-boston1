@@ -41,6 +41,8 @@ const PLACE_STYLES = [
   { bg: 'bg-amber-50', border: 'border-amber-300', text: 'text-amber-700', icon: Trophy, label: '1er puesto' },
   { bg: 'bg-slate-50', border: 'border-slate-300', text: 'text-slate-600', icon: Medal, label: '2do puesto' },
   { bg: 'bg-orange-50', border: 'border-orange-300', text: 'text-orange-700', icon: Award, label: '3er puesto' },
+  { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', icon: Star, label: '4to puesto' },
+  { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700', icon: Star, label: '5to puesto' },
 ];
 
 export default async function AdminPage() {
@@ -173,7 +175,7 @@ export default async function AdminPage() {
                           Sin ganadores esta semana
                         </p>
                       ) : (
-                        <div className="grid gap-4 sm:grid-cols-3">
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
                           {week.winners.map((winner, i) => {
                             const style = PLACE_STYLES[i];
                             const Icon = style.icon;

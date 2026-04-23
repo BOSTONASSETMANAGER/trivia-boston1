@@ -125,9 +125,9 @@ export async function getAdminStats(): Promise<AdminStats> {
       totalWeekSessions;
 
     const sorted = Array.from(bestByUser.values());
-    const top3 = sorted.slice(0, 3);
+    const top5 = sorted.slice(0, 5);
 
-    const winners: WeeklyWinner[] = top3.map((s) => {
+    const winners: WeeklyWinner[] = top5.map((s) => {
       const user = userMap.get(s.user_id);
       return {
         weekNumber,
