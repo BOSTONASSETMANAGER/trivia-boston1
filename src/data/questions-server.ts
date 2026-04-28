@@ -133,7 +133,7 @@ const week2Pool: Question[] = [
   },
   {
     id: 'w2q3',
-    text: '¿En cuántos años la dictadura militar (1976–1983) multiplicó por seis la deuda externa argentina?',
+    text: '¿En cuántos años la dictadura militar multiplicó por seis la deuda externa argentina?',
     options: ['En 3 años', 'En 7 años', 'En 10 años', 'En 15 años'],
     correctIndex: 1,
     category: 'Mercado de Capitales',
