@@ -147,7 +147,7 @@ const week2Pool: Question[] = [
   },
   {
     id: 'w2q5',
-    text: '¿Qué mide el Riesgo País de Argentina, que en abril de 2026 se ubicó en torno a los 500–580 puntos básicos?',
+    text: '¿Qué mide el Riesgo País de Argentina?',
     options: [
       'La inflación esperada para los próximos 12 meses',
       'El sobrecosto de tasa que Argentina paga sobre los bonos del Tesoro de EE.UU. para financiarse',
