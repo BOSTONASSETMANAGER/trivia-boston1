@@ -177,8 +177,10 @@ export default function TriviaGame() {
       : state.attemptsRemaining ?? attempts?.remaining ?? null;
 
   // Use metadata from the last fetched week (when we're in a game) or fall
-  // back to the static week metadata for StartScreen text.
-  const staticWeek = weeks[0];
+  // back to the currently active week metadata for StartScreen text.
+  const staticWeek =
+    weeks.find((w) => w.weekNumber === weekAvailability.weekNumber) ??
+    weeks[weeks.length - 1];
   const startWeekTitle = staticWeek?.title ?? '';
   const startWeekDescription = staticWeek?.description;
 
