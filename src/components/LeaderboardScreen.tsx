@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { Trophy, Medal, Award, Clock, Star, ChevronRight } from 'lucide-react';
+import { Trophy, Medal, Award, Clock, Star, ChevronRight, ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import { getLeaderboard } from '@/app/actions/leaderboard';
 import { getAvatarForUser } from '@/lib/avatar';
 import UserProfileModal from '@/components/UserProfileModal';
+import { weeks } from '@/data/questions';
 import type { LeaderboardEntry } from '@/types/game';
 
 interface LeaderboardScreenProps {
@@ -28,6 +29,16 @@ export default function LeaderboardScreen({
   weekTitle,
   currentUserId,
 }: LeaderboardScreenProps) {
+  const sortedWeeks = [...weeks].sort((a, b) => a.weekNumber - b.weekNumber);
+  const initialIndex = Math.max(
+    0,
+    sortedWeeks.findIndex((w) => w.weekNumber === weekNumber)
+  );
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const activeWeek = sortedWeeks[activeIndex] ?? sortedWeeks[sortedWeeks.length - 1];
+  const activeWeekNumber = activeWeek?.weekNumber ?? weekNumber;
+  const activeWeekTitle = activeWeek?.title ?? weekTitle;
+
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
@@ -36,7 +47,8 @@ export default function LeaderboardScreen({
 
   useEffect(() => {
     let mounted = true;
-    getLeaderboard(weekNumber).then((data) => {
+    setLoading(true);
+    getLeaderboard(activeWeekNumber).then((data) => {
       if (mounted) {
         setEntries(data);
         setLoading(false);
@@ -45,7 +57,10 @@ export default function LeaderboardScreen({
     return () => {
       mounted = false;
     };
-  }, [weekNumber]);
+  }, [activeWeekNumber]);
+
+  const canGoPrev = activeIndex > 0;
+  const canGoNext = activeIndex < sortedWeeks.length - 1;
 
   const top3 = entries.slice(0, 3);
   const rest = entries.slice(3);
@@ -75,10 +90,34 @@ export default function LeaderboardScreen({
             <Trophy className="h-3 w-3 text-primary" />
             <span className="boston-overline !text-[10px]">Ranking</span>
           </div>
-          <h1 className="boston-title mb-1 text-3xl">Semana {weekNumber}</h1>
+          <div className="flex items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => canGoPrev && setActiveIndex((i) => i - 1)}
+              disabled={!canGoPrev}
+              aria-label="Semana anterior"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-outline-variant bg-white text-on-surface transition-all hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-outline-variant disabled:hover:text-on-surface"
+              style={{ touchAction: 'manipulation' }}
+            >
+              <ChevronLeft className="h-4 w-4" strokeWidth={2.2} />
+            </button>
+            <h1 className="boston-title min-w-[8.5rem] text-3xl">
+              Semana {activeWeekNumber}
+            </h1>
+            <button
+              type="button"
+              onClick={() => canGoNext && setActiveIndex((i) => i + 1)}
+              disabled={!canGoNext}
+              aria-label="Semana siguiente"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-outline-variant bg-white text-on-surface transition-all hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-outline-variant disabled:hover:text-on-surface"
+              style={{ touchAction: 'manipulation' }}
+            >
+              <ChevronRight className="h-4 w-4" strokeWidth={2.2} />
+            </button>
+          </div>
           <div className="divider-glow mx-auto mt-3 w-20" />
           <p className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-primary/70">
-            {weekTitle}
+            {activeWeekTitle}
           </p>
         </motion.div>
 
@@ -262,7 +301,7 @@ export default function LeaderboardScreen({
           <UserProfileModal
             key={selectedUserId}
             userId={selectedUserId}
-            weekNumber={weekNumber}
+            weekNumber={activeWeekNumber}
             onClose={() => setSelectedUserId(null)}
           />
         )}
