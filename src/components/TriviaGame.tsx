@@ -262,6 +262,9 @@ export default function TriviaGame() {
             userName={user.name}
             userEmail={user.email}
             onLogout={handleLogout}
+            onEmailChanged={(email) =>
+              setAuthenticated({ ...user, email })
+            }
           />
         )}
 

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { LogOut, ChevronRight, ArrowLeft, Lock } from 'lucide-react';
+import { LogOut, ChevronRight, ArrowLeft, Lock, Mail, Phone, KeyRound, Check, X } from 'lucide-react';
 import {
   MEDAL_CATALOG,
   CATEGORY_LABELS,
@@ -12,20 +12,31 @@ import {
   type MedalCategory,
 } from '@/lib/medals/catalog';
 import { getAvatarForUser } from '@/lib/avatar';
+import {
+  getMyAccount,
+  updateMyEmail,
+  updateMyPhone,
+  updateMyPin,
+  type MyAccount,
+} from '@/app/actions/profile';
 
 interface ProfileScreenProps {
   userId: string;
   userName: string;
   userEmail: string;
   onLogout: () => void;
+  onEmailChanged?: (email: string) => void;
   unlockedIds?: string[];
 }
+
+type EditField = 'email' | 'phone' | 'pin' | null;
 
 export default function ProfileScreen({
   userId,
   userName,
   userEmail,
   onLogout,
+  onEmailChanged,
   unlockedIds = [],
 }: ProfileScreenProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -36,6 +47,18 @@ export default function ProfileScreen({
   const progressPct = totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0;
   const avatarSrc = getAvatarForUser(userId);
   const [selectedCategory, setSelectedCategory] = useState<MedalCategory | null>(null);
+  const [account, setAccount] = useState<MyAccount>({ email: userEmail, phone: null });
+  const [editField, setEditField] = useState<EditField>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    getMyAccount().then((data) => {
+      if (mounted && data) setAccount(data);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const grouped = MEDAL_CATALOG.reduce(
     (acc, medal) => {
@@ -86,7 +109,7 @@ export default function ProfileScreen({
           </div>
           <div className="min-w-0 flex-1">
             <h1 className="boston-title truncate text-lg sm:text-xl">{userName}</h1>
-            <p className="truncate text-xs sm:text-sm text-outline">{userEmail}</p>
+            <p className="truncate text-xs sm:text-sm text-outline">{account.email}</p>
           </div>
         </motion.div>
 
@@ -285,7 +308,67 @@ export default function ProfileScreen({
           </AnimatePresence>
         </div>
 
-        {/* 5. Logout */}
+        {/* 5. Account settings */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: prefersReducedMotion ? 0 : 0.45 }}
+          className="mt-4"
+        >
+          <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-on-surface/50 mb-1.5">
+            Cuenta
+          </p>
+          <div className="flex flex-col gap-1.5">
+            <AccountRow
+              icon={Mail}
+              label="Email"
+              value={account.email}
+              open={editField === 'email'}
+              onToggle={() => setEditField(editField === 'email' ? null : 'email')}
+            >
+              <EditEmailForm
+                current={account.email}
+                onCancel={() => setEditField(null)}
+                onSaved={(acc) => {
+                  setAccount(acc);
+                  setEditField(null);
+                  onEmailChanged?.(acc.email);
+                }}
+              />
+            </AccountRow>
+            <AccountRow
+              icon={Phone}
+              label="Telefono"
+              value={account.phone || 'No definido'}
+              valueMuted={!account.phone}
+              open={editField === 'phone'}
+              onToggle={() => setEditField(editField === 'phone' ? null : 'phone')}
+            >
+              <EditPhoneForm
+                current={account.phone ?? ''}
+                onCancel={() => setEditField(null)}
+                onSaved={(acc) => {
+                  setAccount(acc);
+                  setEditField(null);
+                }}
+              />
+            </AccountRow>
+            <AccountRow
+              icon={KeyRound}
+              label="PIN"
+              value="••••"
+              open={editField === 'pin'}
+              onToggle={() => setEditField(editField === 'pin' ? null : 'pin')}
+            >
+              <EditPinForm
+                onCancel={() => setEditField(null)}
+                onSaved={() => setEditField(null)}
+              />
+            </AccountRow>
+          </div>
+        </motion.div>
+
+        {/* 6. Logout */}
         <motion.button
           type="button"
           initial={{ opacity: 0 }}
@@ -367,5 +450,299 @@ function MedalRow({
         {medal.tier}
       </span>
     </motion.div>
+  );
+}
+
+function AccountRow({
+  icon: Icon,
+  label,
+  value,
+  valueMuted,
+  open,
+  onToggle,
+  children,
+}: {
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  label: string;
+  value: string;
+  valueMuted?: boolean;
+  open: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-xl border border-[#e2e8f0] bg-[#f8fafc] overflow-hidden">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex w-full items-center gap-2.5 px-3 py-2 sm:py-2.5 text-left transition-colors hover:bg-white"
+        style={{ WebkitTapHighlightColor: 'transparent' }}
+        aria-expanded={open}
+      >
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[rgba(29,57,105,0.08)] to-[rgba(37,99,235,0.08)] text-[#1d3969]">
+          <Icon className="h-4 w-4" strokeWidth={2} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-outline">
+            {label}
+          </p>
+          <p
+            className={`truncate text-xs sm:text-sm font-semibold ${
+              valueMuted ? 'text-outline/60' : 'text-on-surface'
+            }`}
+          >
+            {value}
+          </p>
+        </div>
+        <ChevronRight
+          className={`h-3.5 w-3.5 shrink-0 text-outline/40 transition-transform ${
+            open ? 'rotate-90' : ''
+          }`}
+          aria-hidden="true"
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="overflow-hidden"
+          >
+            <div className="border-t border-[#e2e8f0] bg-white px-3 py-3">
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function FormFeedback({ error, success }: { error?: string | null; success?: string | null }) {
+  if (!error && !success) return null;
+  return (
+    <p
+      className={`text-[11px] ${
+        error ? 'text-tertiary' : 'text-secondary'
+      }`}
+      role="status"
+    >
+      {error || success}
+    </p>
+  );
+}
+
+function FormButtons({
+  onCancel,
+  saving,
+  saveLabel = 'Guardar',
+}: {
+  onCancel: () => void;
+  saving: boolean;
+  saveLabel?: string;
+}) {
+  return (
+    <div className="flex gap-2">
+      <button
+        type="button"
+        onClick={onCancel}
+        disabled={saving}
+        className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-[#e2e8f0] bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-outline transition-colors hover:bg-[#f8fafc] disabled:opacity-50"
+      >
+        <X className="h-3.5 w-3.5" />
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        disabled={saving}
+        className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+      >
+        <Check className="h-3.5 w-3.5" />
+        {saving ? 'Guardando...' : saveLabel}
+      </button>
+    </div>
+  );
+}
+
+const inputClass =
+  'w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2 text-sm text-on-surface placeholder:text-outline/50 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20';
+
+function EditEmailForm({
+  current,
+  onCancel,
+  onSaved,
+}: {
+  current: string;
+  onCancel: () => void;
+  onSaved: (acc: MyAccount) => void;
+}) {
+  const [email, setEmail] = useState(current);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    if (email.trim().toLowerCase() === current.toLowerCase()) {
+      setError('El email es el mismo');
+      return;
+    }
+    setSaving(true);
+    const res = await updateMyEmail(email);
+    setSaving(false);
+    if (!res.ok) {
+      setError(res.error);
+      return;
+    }
+    onSaved(res.account);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="nuevo@email.com"
+        className={inputClass}
+        autoComplete="email"
+        required
+      />
+      <FormFeedback error={error} />
+      <FormButtons onCancel={onCancel} saving={saving} />
+    </form>
+  );
+}
+
+function EditPhoneForm({
+  current,
+  onCancel,
+  onSaved,
+}: {
+  current: string;
+  onCancel: () => void;
+  onSaved: (acc: MyAccount) => void;
+}) {
+  const [phone, setPhone] = useState(current);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setSaving(true);
+    const res = await updateMyPhone(phone);
+    setSaving(false);
+    if (!res.ok) {
+      setError(res.error);
+      return;
+    }
+    onSaved(res.account);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <input
+        type="tel"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        placeholder="+54 9 11 ..."
+        className={inputClass}
+        autoComplete="tel"
+        inputMode="tel"
+      />
+      <p className="text-[10px] text-outline/70">
+        Dejá vacío para quitar el teléfono.
+      </p>
+      <FormFeedback error={error} />
+      <FormButtons onCancel={onCancel} saving={saving} />
+    </form>
+  );
+}
+
+function EditPinForm({
+  onCancel,
+  onSaved,
+}: {
+  onCancel: () => void;
+  onSaved: () => void;
+}) {
+  const [currentPin, setCurrentPin] = useState('');
+  const [newPin, setNewPin] = useState('');
+  const [confirmPin, setConfirmPin] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    if (!/^\d{4}$/.test(currentPin)) {
+      setError('PIN actual debe ser de 4 digitos');
+      return;
+    }
+    if (!/^\d{4}$/.test(newPin)) {
+      setError('PIN nuevo debe ser de 4 digitos');
+      return;
+    }
+    if (newPin !== confirmPin) {
+      setError('Los PIN nuevos no coinciden');
+      return;
+    }
+    setSaving(true);
+    const res = await updateMyPin(currentPin, newPin);
+    setSaving(false);
+    if (!res.ok) {
+      setError(res.error);
+      return;
+    }
+    setCurrentPin('');
+    setNewPin('');
+    setConfirmPin('');
+    setSuccess('PIN actualizado');
+    setTimeout(() => onSaved(), 600);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <input
+        type="password"
+        value={currentPin}
+        onChange={(e) => setCurrentPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+        placeholder="PIN actual"
+        className={inputClass}
+        inputMode="numeric"
+        autoComplete="current-password"
+        maxLength={4}
+        required
+      />
+      <input
+        type="password"
+        value={newPin}
+        onChange={(e) => setNewPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+        placeholder="PIN nuevo (4 digitos)"
+        className={inputClass}
+        inputMode="numeric"
+        autoComplete="new-password"
+        maxLength={4}
+        required
+      />
+      <input
+        type="password"
+        value={confirmPin}
+        onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+        placeholder="Confirmar PIN nuevo"
+        className={inputClass}
+        inputMode="numeric"
+        autoComplete="new-password"
+        maxLength={4}
+        required
+      />
+      <FormFeedback error={error} success={success} />
+      <FormButtons onCancel={onCancel} saving={saving} />
+    </form>
   );
 }
