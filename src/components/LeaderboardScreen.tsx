@@ -402,13 +402,7 @@ function PodiumBlock({
 
       {/* Score */}
       <p className="mb-1 flex items-center gap-0.5 text-[10px] text-outline">
-        <Star
-          className={`h-2.5 w-2.5 ${
-            highlight
-              ? 'fill-secondary text-secondary'
-              : 'fill-outline text-outline'
-          }`}
-        />
+        <Star className="h-2.5 w-2.5 fill-secondary text-secondary" />
         {entry.score}/3
       </p>
 
