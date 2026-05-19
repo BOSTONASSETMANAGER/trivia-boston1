@@ -170,21 +170,11 @@ export async function getUserMedals(userId: string): Promise<UserMedalsResult> {
     return sum + (m?.coins ?? 0);
   }, 0);
 
-  // Best-effort sync con el prode
-  let walletBalance: number | null = null;
-  const { data: triviaUser } = await supabase
-    .from('trivia_users')
-    .select('email')
-    .eq('id', userId)
-    .maybeSingle();
-
-  if (triviaUser?.email) {
-    walletBalance = await syncMedalCoinsToWallet(
-      supabase,
-      triviaUser.email,
-      evalResult.unlockedIds,
-    );
-  }
+  // El sync con el wallet del Prode esta deshabilitado: el server de trivia
+  // usa la publishable key (anon) y las RLS del prode rechazan los inserts,
+  // dejando un wallet_balance=0 que tapaba la UI con 0 BC aunque hubiese
+  // medallas desbloqueadas. La migracion al Prode se hara al final del torneo.
+  void syncMedalCoinsToWallet;
 
   return {
     unlockedIds: evalResult.unlockedIds,
@@ -192,6 +182,6 @@ export async function getUserMedals(userId: string): Promise<UserMedalsResult> {
     totalGames: sessions.length,
     coinsFromMedals,
     totalMedalCoins: TOTAL_MEDAL_COINS,
-    walletBalance,
+    walletBalance: null,
   };
 }
