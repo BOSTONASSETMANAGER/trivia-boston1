@@ -47,6 +47,15 @@ const weekMeta: WeekPool[] = [
     openTime: '10:00',
     closeTime: '23:59',
   },
+  {
+    weekNumber: 5,
+    title: 'SEMANA 5: Mundial 2014 Brasil y rumbo al Mundial 2026.',
+    description:
+      'El Mundial del Maracanazo alemán. Argentina finalista con Messi, Romero atajando penales y la final perdida ante Alemania. Cristina presidenta, fondos buitre y la antesala del camino a 2026.',
+    availableDate: '2026-05-20',
+    openTime: '10:00',
+    closeTime: '23:59',
+  },
 ];
 
 /** Flat list of week metadata (for admin dashboard, lookups, etc.) */

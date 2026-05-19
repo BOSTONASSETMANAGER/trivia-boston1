@@ -419,6 +419,126 @@ const week4Pool: Question[] = [
   },
 ];
 
+/* ───────────── Pool de preguntas – Semana 5 ───────────── */
+
+const week5Pool: Question[] = [
+  {
+    id: 'w5q1',
+    text: '¿Quién fue el arquero titular de Argentina en Mundial 2014?',
+    options: [
+      'Willy Caballero',
+      'Mariano Andújar',
+      'Franco Armani',
+      'Sergio Romero',
+    ],
+    correctIndex: 3,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w5q2',
+    text: '¿Contra qué selección perdió Argentina la final del Mundial 2014?',
+    options: ['Brasil', 'Alemania', 'Países Bajos', 'España'],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w5q3',
+    text: '¿Quién era presidente de Argentina durante 2014?',
+    options: [
+      'Cristina Fernández de Kirchner',
+      'Mauricio Macri',
+      'Néstor Kirchner',
+      'Eduardo Duhalde',
+    ],
+    correctIndex: 0,
+    category: 'Economía',
+  },
+  {
+    id: 'w5q4',
+    text: '¿Cómo se llamó al grupo de acreedores que demandó a Argentina en 2014?',
+    options: [
+      'Fondos unidos',
+      'Fondos buitre',
+      'Fondos soberanos',
+      'Fondos rojos',
+    ],
+    correctIndex: 1,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w5q5',
+    text: '¿Cómo se llaman las mascotas oficiales del Mundial 2026?',
+    options: [
+      'Zayu, Footix y Striker',
+      'Maple, Zayu y Clutch',
+      'Gauchito, Naranjito y Pique',
+      'Tata, Goleo y Clutch',
+    ],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w5q6',
+    text: '¿Qué significa el término "cepo cambiario"?',
+    options: [
+      'Una facilidad para comprar dólares',
+      'Un conjunto de restricciones para operar con dólares',
+      'Un impuesto a los importadores',
+      'Un impuesto al dólar',
+    ],
+    correctIndex: 1,
+    category: 'Economía',
+  },
+  {
+    id: 'w5q7',
+    text: '¿Qué son los bonos soberanos que emite el Estado argentino?',
+    options: [
+      'Deuda privada de empresas, más seguras y con mejor flujo de caja',
+      'Títulos de deuda pública emitidos por el Estado Nacional para financiarse',
+      'Una moneda alternativa al peso',
+      'Plazos fijos del Banco Nación en dólares',
+    ],
+    correctIndex: 1,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w5q8',
+    text: 'En el Mundial 2026, el Grupo J está compuesto por Argentina, Argelia y otras dos selecciones. ¿Cuáles son?',
+    options: [
+      'Brasil y Francia',
+      'Austria y Jordania',
+      'Alemania y Países Bajos',
+      'Australia y Japón',
+    ],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w5q9',
+    text: '¿Qué diferencia a una inversión de "renta fija" de una de "renta variable"?',
+    options: [
+      'La renta fija paga un flujo de fondos conocidos previamente, mientras que la renta variable no promete ningún flujo de fondos conocidos',
+      'La renta fija opera en dólares y la renta variable en pesos',
+      'La renta fija varía según el rendimiento de la empresa; la variable paga intereses más altos',
+      'No hay diferencia',
+    ],
+    correctIndex: 0,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w5q10',
+    text: '¿Qué significa "déficit fiscal"?',
+    options: [
+      'Que el Estado tiene superávit',
+      'Que el Estado gasta más de lo que recauda',
+      'Que sube el dólar',
+      'Que el dólar supera la inflación',
+    ],
+    correctIndex: 1,
+    category: 'Economía',
+  },
+];
+
 /* ───────────── Semanas ───────────── */
 
 interface ServerWeekPool {
@@ -470,9 +590,19 @@ const weekPools: ServerWeekPool[] = [
     closeTime: '23:59',
     pool: week4Pool,
   },
+  {
+    weekNumber: 5,
+    title: 'SEMANA 5: Mundial 2014 Brasil y rumbo al Mundial 2026.',
+    description:
+      'El Mundial del Maracanazo alemán. Argentina finalista con Messi, Romero atajando penales y la final perdida ante Alemania. Cristina presidenta, fondos buitre y la antesala del camino a 2026.',
+    availableDate: '2026-05-20',
+    openTime: '10:00',
+    closeTime: '23:59',
+    pool: week5Pool,
+  },
 ];
 
-export { week1Pool, week2Pool, week3Pool, week4Pool, weekPools };
+export { week1Pool, week2Pool, week3Pool, week4Pool, week5Pool, weekPools };
 
 /* ───────────── Randomizer ───────────── */
 
