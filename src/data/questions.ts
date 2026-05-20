@@ -16,7 +16,7 @@ const weekMeta: WeekPool[] = [
   {
     weekNumber: 1,
     title: 'Primer Mundial de la Historia',
-    description: 'Uruguay 1930 - El torneo que lo empezó todo',
+    description: '',
     availableDate: '2026-04-22',
     openTime: '10:00',
     closeTime: '23:59',
@@ -24,7 +24,7 @@ const weekMeta: WeekPool[] = [
   {
     weekNumber: 2,
     title: 'Argentina Campeón 1978 y Camino al Mundial 2026',
-    description: 'De Kempes y Holanda a Messi y el debut ante Argelia',
+    description: '',
     availableDate: '2026-04-29',
     openTime: '10:00',
     closeTime: '23:59',
@@ -32,8 +32,7 @@ const weekMeta: WeekPool[] = [
   {
     weekNumber: 3,
     title: 'SEMANA 3: Mundial 1986 México, Argentina campeón.',
-    description:
-      'El Mundial de Maradona. La Mano de Dios, el Gol del Siglo, la revancha contra Inglaterra. El título más épico de la historia argentina.',
+    description: '',
     availableDate: '2026-05-06',
     openTime: '09:30',
     closeTime: '23:59',
@@ -41,8 +40,7 @@ const weekMeta: WeekPool[] = [
   {
     weekNumber: 4,
     title: 'SEMANA 4: Mundial 1994 Estados Unidos.',
-    description:
-      'El Mundial del adiós. El último torneo de Maradona con la Selección y la temprana eliminación en octavos. Brasil se consagró tetracampeón en la primera final por penales de la historia de los Mundiales.',
+    description: '',
     availableDate: '2026-05-13',
     openTime: '10:00',
     closeTime: '23:59',
@@ -50,8 +48,7 @@ const weekMeta: WeekPool[] = [
   {
     weekNumber: 5,
     title: 'SEMANA 5: Mundial 2014 Brasil y rumbo al Mundial 2026.',
-    description:
-      'El Mundial del Maracanazo alemán. Argentina finalista con Messi, Romero atajando penales y la final perdida ante Alemania. Cristina presidenta, fondos buitre y la antesala del camino a 2026.',
+    description: '',
     availableDate: '2026-05-20',
     openTime: '10:00',
     closeTime: '23:59',
