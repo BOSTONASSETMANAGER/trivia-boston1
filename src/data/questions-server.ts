@@ -539,6 +539,116 @@ const week5Pool: Question[] = [
   },
 ];
 
+/* ───────────── Pool de preguntas – Semana 6 ───────────── */
+
+const week6Pool: Question[] = [
+  {
+    id: 'w6q1',
+    text: 'Con apenas 22 años, Julián Álvarez se afianzó como titular y fue clave en el título. ¿Cuántos goles marcó en Qatar 2022?',
+    options: ['5 goles', '6 goles', '4 goles', '3 goles'],
+    correctIndex: 2,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w6q2',
+    text: '¿Qué jugador convirtió el penal que consagró campeona a Argentina?',
+    options: [
+      'Lionel Messi',
+      'Gonzalo Montiel',
+      'Paulo Dybala',
+      'Lautaro Martínez',
+    ],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w6q3',
+    text: 'Mientras Argentina festejaba el Mundial, ¿según el INDEC de cuánto fue la inflación anual de 2022, la más alta en tres décadas?',
+    options: ['50,9%', '72,4%', '94,8%', '120%'],
+    correctIndex: 2,
+    category: 'Economía',
+  },
+  {
+    id: 'w6q4',
+    text: '¿Cómo se llamó la medida de 2022 para incentivar la exportación del agro?',
+    options: ['Dólar soja', 'Dólar campo', 'Dólar verde', 'Dólar exportador'],
+    correctIndex: 0,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w6q5',
+    text: 'Previo al torneo, la cábala del plantel era adivinar cartas. ¿Qué carta le tocó a Lionel Messi?',
+    options: [
+      'Uno de espadas',
+      'Cinco de copas',
+      'Diez de oros',
+      'Siete de bastos',
+    ],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w6q6',
+    text: '¿Qué son las reservas internacionales del BCRA?',
+    options: [
+      'El dinero en cajas de ahorro de los argentinos',
+      'Los dólares y oro que tiene el Banco Central',
+      'La deuda total con el FMI',
+      'La recaudación impositiva del Estado',
+    ],
+    correctIndex: 1,
+    category: 'Economía',
+  },
+  {
+    id: 'w6q7',
+    text: '¿Qué es la "tasa de interés" que paga un plazo fijo?',
+    options: [
+      'Un impuesto que cobra el banco',
+      'La ganancia que se obtiene por dejar el dinero invertido un tiempo',
+      'La inflación mensual',
+      'El costo de mantener una cuenta',
+    ],
+    correctIndex: 1,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w6q8',
+    text: '¿Qué países serán sede del Mundial 2026?',
+    options: [
+      'Estados Unidos, México y Panamá',
+      'México, Estados Unidos y Canadá',
+      'Canadá, Estados Unidos y Brasil',
+      'México, Canadá y Guatemala',
+    ],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w6q9',
+    text: '¿Qué significa que la inflación esté "desacelerando"?',
+    options: [
+      'Que los precios bajan',
+      'Que los precios siguen subiendo, pero a un ritmo más lento',
+      'Que la economía entra en recesión',
+      'Que sube el dólar',
+    ],
+    correctIndex: 1,
+    category: 'Economía',
+  },
+  {
+    id: 'w6q10',
+    text: '¿Qué es la "diversificación" en una cartera de inversión?',
+    options: [
+      'Invertir todo en un solo activo seguro',
+      'Distribuir el dinero en distintos activos para reducir el riesgo',
+      'Cambiar de inversión todos los meses',
+      'Invertir solamente en dólares',
+    ],
+    correctIndex: 1,
+    category: 'Mercado de Capitales',
+  },
+];
+
 /* ───────────── Semanas ───────────── */
 
 interface ServerWeekPool {
@@ -597,9 +707,18 @@ const weekPools: ServerWeekPool[] = [
     closeTime: '23:59',
     pool: week5Pool,
   },
+  {
+    weekNumber: 6,
+    title: 'SEMANA 6: Mundial 2022, Qatar — la tercera estrella',
+    description: '',
+    availableDate: '2026-05-27',
+    openTime: '10:00',
+    closeTime: '23:59',
+    pool: week6Pool,
+  },
 ];
 
-export { week1Pool, week2Pool, week3Pool, week4Pool, week5Pool, weekPools };
+export { week1Pool, week2Pool, week3Pool, week4Pool, week5Pool, week6Pool, weekPools };
 
 /* ───────────── Randomizer ───────────── */
 

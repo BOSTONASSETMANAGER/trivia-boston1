@@ -53,6 +53,14 @@ const weekMeta: WeekPool[] = [
     openTime: '10:00',
     closeTime: '23:59',
   },
+  {
+    weekNumber: 6,
+    title: 'SEMANA 6: Mundial 2022, Qatar — la tercera estrella',
+    description: '',
+    availableDate: '2026-05-27',
+    openTime: '10:00',
+    closeTime: '23:59',
+  },
 ];
 
 /** Flat list of week metadata (for admin dashboard, lookups, etc.) */
