@@ -61,6 +61,15 @@ const weekMeta: WeekPool[] = [
     openTime: '10:00',
     closeTime: '23:59',
   },
+  {
+    weekNumber: 7,
+    title: 'TRIVIA SEMANA 7 — Camino al Mundial 2026',
+    description:
+      'Última semana de la trivia y cuenta regresiva hacia el Mundial 2026.',
+    availableDate: '2026-06-03',
+    openTime: '10:00',
+    closeTime: '23:59',
+  },
 ];
 
 /** Flat list of week metadata (for admin dashboard, lookups, etc.) */

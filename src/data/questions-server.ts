@@ -649,6 +649,116 @@ const week6Pool: Question[] = [
   },
 ];
 
+/* ───────────── Pool de preguntas – Semana 7 ───────────── */
+
+const week7Pool: Question[] = [
+  {
+    id: 'w7q1',
+    text: '¿En qué estadio juega Argentina su primer partido del Mundial 2026?',
+    options: [
+      'Estadio Azteca (México)',
+      'Arrowhead Stadium (Kansas City)',
+      'AT&T Stadium (Dallas)',
+      'MetLife Stadium (Nueva York)',
+    ],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w7q2',
+    text: '¿Cuántos jugadores integran la lista definitiva de Argentina para el Mundial 2026?',
+    options: ['23 jugadores', '26 jugadores', '30 jugadores', '32 jugadores'],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w7q3',
+    text: 'Argentina jugará dos amistosos previo al Mundial. ¿Contra qué selecciones?',
+    options: [
+      'Brasil e Italia',
+      'Honduras e Islandia',
+      'México y Canadá',
+      'España y Portugal',
+    ],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+  {
+    id: 'w7q4',
+    text: '¿Qué hito histórico habilitó la CNV en mayo de 2026 para el mercado argentino?',
+    options: [
+      'La primera reglamentación de ETFs locales',
+      'La eliminación del peso argentino',
+      'El cierre de la Bolsa',
+      'La privatización del Banco Central',
+    ],
+    correctIndex: 0,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w7q5',
+    text: '¿En torno a qué porcentaje proyectan la inflación de mayo 2026?',
+    options: ['0,5% mensual', '2% mensual', '5% mensual', '10% mensual'],
+    correctIndex: 1,
+    category: 'Economía',
+  },
+  {
+    id: 'w7q6',
+    text: '¿Qué mide el índice Merval, el principal indicador de la Bolsa argentina?',
+    options: [
+      'La inflación mensual',
+      'La evolución de las principales acciones argentinas',
+      'El precio del dólar oficial',
+      'Las reservas del Banco Central',
+    ],
+    correctIndex: 1,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w7q7',
+    text: 'Este mes BYMA habilitó nuevos CEDEARs emitidos por Banco Comafi. ¿Cuántos se sumaron?',
+    options: ['5 CEDEARs', '13 CEDEARs', '20 CEDEARs', '50 CEDEARs'],
+    correctIndex: 1,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w7q8',
+    text: '¿Qué mide el riesgo país?',
+    options: [
+      'La inflación mensual',
+      'El sobrecosto que paga Argentina para endeudarse',
+      'Las reservas del BCRA',
+      'El dólar paralelo',
+    ],
+    correctIndex: 1,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w7q9',
+    text: 'Las reservas del BCRA esta semana superaron un nivel histórico. ¿Qué nivel alcanzaron?',
+    options: [
+      'USD 30.000 millones',
+      'USD 48.000 millones',
+      'USD 80.000 millones',
+      'USD 100.000 millones',
+    ],
+    correctIndex: 1,
+    category: 'Mercado de Capitales',
+  },
+  {
+    id: 'w7q10',
+    text: '¿Qué prometió Scaloni a los hinchas argentinos rumbo al Mundial 2026?',
+    options: [
+      '"Vamos a salir campeones seguro"',
+      '"No los vamos a dejar tirados"',
+      '"Será imposible repetir"',
+      '"El Mundial se gana solo"',
+    ],
+    correctIndex: 1,
+    category: 'Fútbol',
+  },
+];
+
 /* ───────────── Semanas ───────────── */
 
 interface ServerWeekPool {
@@ -716,9 +826,28 @@ const weekPools: ServerWeekPool[] = [
     closeTime: '23:59',
     pool: week6Pool,
   },
+  {
+    weekNumber: 7,
+    title: 'TRIVIA SEMANA 7 — Camino al Mundial 2026',
+    description:
+      'Última semana de la trivia y cuenta regresiva hacia el Mundial 2026.',
+    availableDate: '2026-06-03',
+    openTime: '10:00',
+    closeTime: '23:59',
+    pool: week7Pool,
+  },
 ];
 
-export { week1Pool, week2Pool, week3Pool, week4Pool, week5Pool, week6Pool, weekPools };
+export {
+  week1Pool,
+  week2Pool,
+  week3Pool,
+  week4Pool,
+  week5Pool,
+  week6Pool,
+  week7Pool,
+  weekPools,
+};
 
 /* ───────────── Randomizer ───────────── */
 
